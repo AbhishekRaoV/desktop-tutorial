@@ -11,18 +11,18 @@ pipeline {
                 }
             }
         }
-        stage("Code Coverage"){
-            steps{
-                script{
-                        dir(Augmented_AI){
+
+        stage("Code Coverage") {
+            steps {
+                script {
+                    dir('Augmented_AI') {
                         sh "cat binarytree.py | sgpt --code \"generate unit test cases\" --no-cache > CodeCoverage.txt  "
-                        }
                     }
                 }
             }
-            post{
+            post {
                 success {
-                    archiveArtifacts artifacts: '**/CodeCoverage.txt'
+                    archiveArtifacts artifacts: 'Augmented_AI/CodeCoverage.txt'
                 }
             }
         }
