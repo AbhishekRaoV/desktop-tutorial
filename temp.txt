@@ -1,0 +1,4 @@
+ python3 app.py repl
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4.11G/4.11G [01:19<00:00, 51.7MiB/s]
+GGML_ASSERT: /home/circleci/project/gpt4all-backend/llama.cpp-mainline/llama.cpp:552: data
+Aborted (core dumped)
