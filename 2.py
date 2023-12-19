@@ -25,11 +25,11 @@ def make_api_request(data):
 
 # Main Streamlit app
 while True:
-    # Display conversation
-    st.text_area("Conversation", value="\n".join([f"{message['role']}: {message['content']}" for message in conversation]))
+    # Display conversation with a unique key
+    st.text_area("Conversation", value="\n".join([f"{message['role']}: {message['content']}" for message in conversation]), key="conversation_text_area")
 
     # Prompt user for input
-    user_input = st.text_input("You:", key=f"user_input_{len(conversation)}")
+    user_input = st.text_input("You:", key="user_input_text_input")
 
     if st.button("Send") and user_input.strip():  # Check if user input is not empty
         # Add user's question to the conversation
@@ -60,7 +60,7 @@ while True:
                 candidates = predictions[0].get("candidates", [])
                 if candidates:
                     model_reply = candidates[0].get("content", "No content found")
-                    st.text_area("Bot:", value=model_reply)
+                    st.text_area("Bot:", value=model_reply, key="bot_text_area")
 
                     # Update the conversation with the model's reply
                     conversation.append({"role": "assistant", "content": model_reply})
