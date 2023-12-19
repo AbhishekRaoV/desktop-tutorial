@@ -1,34 +1,12 @@
-import openpyxl
-
-# Function to read conversation from a file and write to Excel
-def extract_from_file_and_write_to_excel(file_path):
-    # Initialize Excel workbook and sheet
-    workbook = openpyxl.Workbook()
-    sheet = workbook.active
-
-    # Write headers to Excel sheet
-    sheet["A1"] = "User"
-    sheet["B1"] = "Employee ID"
-    sheet["C1"] = "Name"
-    sheet["D1"] = "Tech Stack"
-
-    # Read conversation from file
-    with open(file_path, 'r') as file:
-        lines = file.readlines()
-        user_response = lines[1].strip().split(": ")[1]
-        employee_id = lines[3].strip().split(": ")[1]
-        user_name = lines[5].strip().split(": ")[1]
-        tech_stack = lines[7].strip().split(": ")[1]
-
-        # Write responses to Excel sheet
-        sheet.append([user_response, employee_id, user_name, tech_stack])
-
-    # Save Excel file
-    workbook.save("interview_responses.xlsx")
-    print("Interview responses saved to interview_responses.xlsx")
-
-# Specify the path to your text file (user_input.txt)
-file_path = "user_input.txt"
-
-# Run the extraction and write to Excel
-extract_from_file_and_write_to_excel(file_path)
+KeyError: 'predictions'
+Traceback:
+File "/home/ubuntu/.local/lib/python3.8/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 534, in _run_script
+    exec(code, module.__dict__)
+File "/home/ubuntu/abhi/evaluation/streamlit.py", line 67, in <module>
+    response = get_bot_response(user_input)
+File "/home/ubuntu/.local/lib/python3.8/site-packages/streamlit/runtime/legacy_caching/caching.py", line 716, in wrapped_func
+    return get_or_create_cached_value()
+File "/home/ubuntu/.local/lib/python3.8/site-packages/streamlit/runtime/legacy_caching/caching.py", line 697, in get_or_create_cached_value
+    return_value = non_optional_func(*args, **kwargs)
+File "/home/ubuntu/abhi/evaluation/streamlit.py", line 49, in get_bot_response
+    bot_reply = output["predictions"][0]["candidates"][0]["content"]
