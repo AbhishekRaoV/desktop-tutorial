@@ -29,7 +29,7 @@ while True:
     st.text_area("Conversation", value="\n".join([f"{message['role']}: {message['content']}" for message in conversation]))
 
     # Prompt user for input
-    user_input = st.text_input("You:")
+    user_input = st.text_input("You:", key=f"user_input_{len(conversation)}")
 
     if st.button("Send") and user_input.strip():  # Check if user input is not empty
         # Add user's question to the conversation
