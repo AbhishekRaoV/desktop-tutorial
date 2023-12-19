@@ -15,7 +15,7 @@ st.title("Chatbot Application")
 
 # Initialize conversation with a system message
 conversation = [
-    {"role": "system", "content": "First say hi, then user replies, next ask the user for employee id then user enters employee id then ask user name then user enters name, next act as an interviewer that asks the user which technology stack he knows and then ask questions on that stack but don't give answers to the user"},
+    {"role": "system", "content": "First say hi, then user replies, next ask the user for an employee id then user enters an employee id then ask the user name then user enters a name, next act as an interviewer that asks the user which technology stack he knows and then ask questions on that stack but don't give answers to the user"},
 ]
 
 # Function to make API request
@@ -31,7 +31,7 @@ while True:
     # Prompt user for input
     user_input = st.text_input("You:")
 
-    if st.button("Send"):
+    if st.button("Send") and user_input.strip():  # Check if user input is not empty
         # Add user's question to the conversation
         conversation.append({"role": "user", "content": user_input})
 
