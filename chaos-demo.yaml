@@ -1,9 +1,9 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  namespace: <your-namespace>
-  name: jenkins-role
+  namespace: testpv
+  name: jenkins-pod-reader
 rules:
 - apiGroups: [""]
-  resources: ["pods", "services", "deployments", "ingresses"] # Add other resources as needed
-  verbs: ["get", "list", "watch", "create", "update", "delete"]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch"]
