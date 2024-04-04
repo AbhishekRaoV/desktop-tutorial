@@ -1,4 +1,3 @@
-tcs@01hw1105382:~$ cat jenkins_deploy.yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -23,6 +22,8 @@ spec:
     - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
       name: kube-api-access-wls6b
       readOnly: true
+    - mountPath: /var/jenkins_home  # Mount path inside the container where the PVC will be mounted
+      name: jenkins-data  # Name of the volume defined below
   dnsPolicy: ClusterFirst
   enableServiceLinks: true
   nodeName: 01hw1105382
@@ -63,6 +64,9 @@ spec:
               apiVersion: v1
               fieldPath: metadata.namespace
             path: namespace
+  - name: jenkins-data  # Name of the volume
+    persistentVolumeClaim:
+      claimName: jenkins-pv-claim  # Name of your existing PVC
 status:
   conditions:
   - lastProbeTime: null
