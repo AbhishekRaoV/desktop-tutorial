@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sustainable Resource Management Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #4CAF50;
+            --background-color: #e8f5e9;
+            --card-background: #ffffff;
+            --text-color: black;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+        body {
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100vh;
+            
+        }
+
+        *{
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .project-and-cloud-details {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project-cloud-title h2 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .details-form, .details-cloud-form, .details-cloud-creds {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #252323;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color:  #4CAF50;
+            
+        }
+
+        .hidden {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #details-cloud-creds.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        .submit-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 20%;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #4CAF50;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+        .details-sub-button{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .project-and-cloud-details {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project-cloud-title h2 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .details-form, .details-cloud-form, .details-cloud-creds {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #252323;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color:  #4CAF50;
+            
+        }
+
+        .hidden {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #details-cloud-creds.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        .submit-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 20%;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #4CAF50;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+        .details-sub-button{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            color: var(--text-color);
+            font-size: 14px;
+        }
+        * {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px 10px 20px;
+        }
+        .dashboard-header {
+            color: black;
+            padding: 15px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+            padding: 0px 100px;
+        }
+        .card {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            height: 220px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            font-size: 16px;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .card.selected {
+            background-color: var(--secondary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+        .card-header {
+            padding: 10px;
+            text-align: center;
+            background-color: rgba(76, 175, 80, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        .card.selected .card-header {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .icon-circle {
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 10px;
+            position: relative;
+        }
+        .icon {
+            font-size: 18px;
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .card:hover .icon-circle {
+            transform: scale(1.1);
+        }
+        .card-name {
+            font-size: 15px;
+            font-weight: 600;
+            padding: 5px 0px;
+        }
+        .card-details {
+            padding: 10px;
+            line-height: 1.4;
+            font-size: 13.5px;
+            font-weight: 500;
+        }
+        .card.selected .icon-circle {
+            background-color: white;
+        }
+        .card.selected .icon {
+            color: var(--primary-color);
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card {
+            animation: fadeInUp 0.5s ease-out backwards;
+        }
+        .next-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .next-button:hover {
+            background-color: #45a049;
+        }
+        .container {
+            min-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            /* min-height: 2000px; */
+            /* background-color: red; */
+           
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        .step-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .steps-row {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        #formFields {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        #formFields.fade-out {
+            opacity: 0;
+        }
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .step-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #4caf50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .step-icon:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+        .step-name {
+            font-size: 12px;
+            text-align: center;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+        .step-line {
+            flex-grow: 1;
+            height: 2px;
+            background-color: #ccc;
+            margin: 15px 5px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .step-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: var(--primary-color);
+            transition: width 0.5s ease;
+        }
+        .step-line.completed::after {
+            width: 100%;
+        }
+        .step.active .step-icon {
+            background-color: var(--primary-color);
+        }
+        .step.completed .step-icon {
+            background-color: var(--primary-color);
+        }
+        .step-item.active .step-icon {
+            background-color: white;
+        }
+        .step-item.active .step-icon i {
+            color: #4caf50;
+        }
+        .step.skipped .step-icon {
+            background-color: #808080;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-layout {
+            display: flex;
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        label {
+            display: flex;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus, input[type="password"]:focus, select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px var(--primary-light);
+            transform: translateY(-2px);
+        }
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 9px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .buttons-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .skipandnext {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            width: 100%; 
+        }
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+        .hidden {
+            display: none;
+        }
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+            animation: shakeError 0.4s ease-in-out;
+        }
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        h3 {
+            font-weight: bold;
+        }
+        .step-list {
+            width: 250px;
+            padding: 20px;
+            background-color: #f0f0f0;
+
+            border-right: 1px solid #ddd;
+            min-height: 500px;
+        }
+        .form-content {
+            flex-grow: 1;
+            padding: 40px;
+        }
+        .step-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .step-item:hover {
+            transform: scale(1.05);
+            background-color: #e0e0e0;
+        }
+        .step-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .step-icon {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        .step-name {
+            font-weight: 600;
+        }
+        #formFields {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        #formFields.fade-out {
+            opacity: 0;
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        @keyframes slideOutRight {
+            from { transform: translateX(0); }
+            to { transform: translateX(100%); }
+        }
+        @keyframes slideOutLeft {
+            from { transform: translateX(0); }
+            to { transform: translateX(-100%); }
+        }
+        .slide-in-right {
+            animation: slideInRight 0.3s forwards;
+        }
+        .slide-in-left {
+            animation: slideInLeft 0.3s forwards;
+        }
+        .slide-out-right {
+            animation: slideOutRight 0.3s forwards;
+        }
+        .slide-out-left {
+            animation: slideOutLeft 0.3s forwards;
+        }
+        #formFields {
+            position: relative;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="project-and-cloud-details" id="project-and-cloud-details">
+        <div class="project-cloud-title" id="project-cloud-title">
+            <h2>Project and Cloud Details</h2>
+        </div>
+        <div class="project-cloud-form" id="project-cloud-form">
+            <form id="details-form">
+                <div id="projectNameField" class="details-form">
+                    <label for="projectName">Project Name</label>
+                    <input type="text" id="projectName" name="projectName" required>
+                </div>
+                <div id="details-cloud-form" class="details-cloud-form">
+                    <label for="details-cloud">Cloud Provider</label>
+                    <select id="details-cloud" name="details-cloud" required>
+                        <option value="">Select cloud provider</option>
+                        <option value="aws">AWS</option>
+                        <option value="azure">Azure</option>
+                        <option value="gcp">GCP</option>
+                    </select>
+                </div>
+                <div id="details-cloud-creds" class="hidden">
+                    <div class="details-cloud-creds">
+                        <label for="accessKey">Access Key</label>
+                        <input type="text" id="accessKey" name="accessKey" placeholder="Enter your access key" required>
+                    </div>
+                    <div class="details-cloud-creds">
+                        <label for="secretKey">Secret Key</label>
+                        <input type="password" id="secretKey" name="secretKey" placeholder="Enter your secret key" required>
+                    </div>
+                </div>
+                <div class="details-sub-button">
+                <button type="submit" class="submit-btn">Next</button>
+            </div>
+            </form>
+        </div>
+    </div>
+    <div class="dashboard" id="dashboard" style="display: none;">
+        <div class="dashboard-header">Select areas to implement</div>
+        <div class="card-container" id="cardContainer"></div>
+        <button class="next-button" href="form-container" id="nextButton">Next</button>
+    </div>
+    <div class="container" id="form-container" style="display: none;">
+        <div class="form-layout">
+            <div class="step-list" id="stepList"></div>
+            <div class="form-content">
+                <form id="projectForm">
+                    <div id="formFields"></div>
+                    <div class="buttons-flex">
+                        <button type="button" id="prevBtn" class="hidden" style="font-weight: 600;">Previous</button>
+                        <div class="skipandnext">
+                            <button type="button" id="nextBtn" style="font-weight: 600;">Next</button>
+                            <button type="submit" id="submitBtn" class="hidden">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            var cloudProviderSelect = document.getElementById("details-cloud");
+            var credentialsContainer = document.getElementById("details-cloud-creds");
+            var form = document.getElementById("details-form");
+    
+            cloudProviderSelect.addEventListener("change", function() {
+                var selectedCloud = cloudProviderSelect.value;
+    
+                if (selectedCloud === "") {
+                    credentialsContainer.classList.remove("visible");
+                    setTimeout(() => {
+                        credentialsContainer.classList.add("hidden");
+                    }, 300);
+                } else {
+                    credentialsContainer.classList.remove("hidden");
+                    setTimeout(() => {
+                        credentialsContainer.classList.add("visible");
+                    }, 10);
+                }
+            });
+
+            form.addEventListener("submit", function(e) {
+                e.preventDefault();
+                document.querySelector(".submit-btn").classList.add("submitting");
+                formData.projectDetails = {
+        projectName: document.getElementById("projectName").value,
+        cloudProvider: document.getElementById("details-cloud").value,
+        accessKey: document.getElementById("accessKey").value,
+        secretKey: document.getElementById("secretKey").value
+    };
+                setTimeout(() => {
+                    // alert("Form submitted successfully!");
+                    document.getElementById("dashboard").style.display = "block";
+                    document.getElementById("dashboard").scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    window.scrollTo({
+                    top: document.getElementById("dashboard").offsetTop,
+                    behavior: 'smooth'
+                });
+            }, 100);
+                    document.querySelector(".submit-btn").classList.remove("submitting");
+                }, 1000);
+            });
+      
+        const areas = [
+    { id: 'energyLeaks', name: 'Energy Leaks', icon: 'fa-bolt', details: 'Identify and address energy inefficient code in your project to reduce waste and costs.' },
+    { id: 'mlJobConsumption', name: 'ML Job Consumption', icon: 'fa-microchip', details: 'Monitor energy consumption of machine learning jobs for better efficiency.' },
+    { id: 'energyMetrics', name: 'Energy Metrics', icon: 'fa-chart-line', details: 'Track energy usage and carbon emissions of an application using Intel RAPL.' },
+    { id: 'workloadBenchmarking', name: 'Workload Benchmarking', icon: 'fa-tachometer-alt', details: 'Compare workload performance against different processors to find efficient infrastructure.' },
+    { id: 'energyUtilization', name: 'Energy Utilization', icon: 'fa-plug', details: 'Analyze how energy is being used across your systems to maximize utilization and minimize waste.' },
+    { id: 'resourceProvisioning', name: 'Resource Provisioning', icon: 'fa-server', details: 'Efficiently allocate and manage resources to meet demand while minimizing overprovisioning.' },
+    { id: 'turnOffWorkloads', name: 'Turn Off Workloads', icon: 'fa-power-off', details: 'Automatically shut down idle or unnecessary workloads to conserve energy and reduce costs.' },
+    { id: 'unusedResources', name: 'Unused Resources', icon: 'fa-trash-alt', details: 'Identify and reclaim unused or underutilized resources to optimize your infrastructure.' },
+    { id: 'taggingResources', name: 'Tagging Resources', icon: 'fa-tags', details: 'Implement a comprehensive tagging strategy to better organize and manage your resources.' },
+    { id: 'prechecks', name: 'Prechecks', icon: 'fa-clipboard-check', details: 'Perform automated checks before deployments to ensure compliance and reduce potential issues.' }
+];
+
+const formFields = {
+    energyLeaks: `
+        <h3>Energy Leaks</h3>
+        <div class="form-group">
+            <label for="energyLeaks">Select language</label>
+            <select id="energyLeaks" name="energyLeaks">
+                <option value="">Select language</option>
+                <option value="java">Java</option>
+                <option value="python">Python</option>
+            </select>
+        </div>
+        <div id="energyLeaksUrl" class="form-group hidden">
+            <label for="projectUrl">Project URL</label>
+            <input type="text" id="projectUrl" name="projectUrl">
+            <label for="projectUrlbranch">Branch</label>
+            <input type="text" id="projectUrlbranch" name="projectUrlbranch">
+        </div>
+    `,
+    mlJobConsumption: `
+        <h3>ML Job Energy Consumption</h3>
+        <div class="form-group">
+            <label for="mlJobConsumptionurl">Code URL</label>
+            <input type="text" id="mlJobConsumptionurl" name="mlJobConsumptionurl" placeholder="Enter code URL">
+            </div>
+            <div class="form-group">
+            <label for="mlJobConsumptionPackage">Package</label>
+            <input type="text" id="mlJobConsumptionPackage" name="mlJobConsumptionPackage" placeholder="Enter package name">
+            </div>
+            <div class="form-group">
+            <label for="mlJobConsumptionClass">Class</label>
+            <input type="text" id="mlJobConsumptionClass" name="mlJobConsumptionClass" placeholder="Enter class name">
+            </div>
+            <div class="form-group">
+            <label for="mlJobConsumptionFunction">Function</label>
+            <input type="text" id="mlJobConsumptionFunction" name="mlJobConsumptionFunction" placeholder="Enter function name">
+        </div>
+    `,
+    energyMetrics: `
+        <h3>Energy Metrics (Intel RAPL)</h3>
+        <div class="form-group">
+            <label for="serverIp">Server IP</label>
+            <input type="text" id="serverIp" name="serverIp" placeholder="Enter server IP">
+        </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter username">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter password">
+        </div>
+    `,
+    workloadBenchmarking: `
+        <h3>Workload Benchmarking</h3>
+        <div class="form-group">
+            <label for="workloadBenchmarking">Select processor</label>
+            <select id="workloadBenchmarking" name="workloadBenchmarking">
+                <option value="">Select processor</option>
+                <option value="intel">Intel</option>
+                <option value="amd">AMD</option>
+            </select>
+        </div>
+    `,
+    energyUtilization: `
+        <h3>Energy Utilization</h3>
+        <div class="form-group">
+            <label for="energyUtilization">Select cloud provider</label>
+            <select id="energyUtilization" name="energyUtilization">
+                <option value="">Select cloud provider</option>
+                <option value="aws">AWS</option>
+                <option value="azure">Azure</option>
+                <option value="gcp">GCP</option>
+            </select>
+        </div>
+        <div id="cloudCredentials" class="hidden">
+            <div class="form-group">
+                <label for="accessKey">Access Key</label>
+                <input type="text" id="accessKey" name="accessKey" placeholder="Enter ACCESS KEY">
+            </div>
+            <div class="form-group">
+                <label for="secretKey">Secret Key</label>
+                <input type="password" id="secretKey" name="secretKey" placeholder="Enter SECRET KEY">
+            </div>
+        </div>
+    `,
+    resourceProvisioning: `
+        <h3>Resource Provisioning</h3>
+        <div class="form-group">
+            <label for="resourceProvisioning">Jenkins pipeline URL</label>
+            <input type="text" id="resourceProvisioning" name="resourceProvisioning" placeholder="Enter Jenkins pipeline URL">
+        </div>
+    `,
+    turnOffWorkloads: `
+        <h3>Turn Off Workloads</h3>
+        <div class="form-group">
+            <label for="turnOffWorkloads">Time range</label>
+            <input type="text" id="turnOffWorkloads" name="turnOffWorkloads" placeholder="Enter time range">
+        </div>
+    `,
+    taggingResources: `
+        <h3>Tagging Resources</h3>
+        <div class="form-group">
+            <label for="taggingResources">Select cloud provider</label>
+            <select id="taggingResources" name="taggingResources">
+                <option value="">Select cloud provider</option>
+                <option value="aws">AWS</option>
+                <option value="azure">Azure</option>
+                <option value="gcp">GCP</option>
+            </select>
+        </div>
+        <div id="taggingCredentials" class="hidden">
+            <div class="form-group">
+                <label for="taggingAccessKey">Access Key</label>
+                <input type="text" id="taggingAccessKey" name="taggingAccessKey" placeholder="Enter ACCESS KEY">
+            </div>
+            <div class="form-group">
+                <label for="taggingSecretKey">Secret Key</label>
+                <input type="password" id="taggingSecretKey" name="taggingSecretKey" placeholder="Enter SECRET KEY">
+            </div>
+        </div>
+    `,
+    prechecks: `
+        <h3>Prechecks</h3>
+        <div class="form-group">
+            <label for="prechecks">Select tools</label>
+            <select id="prechecks" name="prechecks">
+                <option value="">Select tools</option>
+                <option value="tool1">Tool 1</option>
+                <option value="tool2">Tool 2</option>
+                <option value="tool3">Tool 3</option>
+            </select>
+        </div>
+    `
+};
+
+let currentStep = 0;
+let selectedSteps = [];
+let formData = {};
+
+const cardContainer = document.getElementById('cardContainer');
+const formFieldsContainer = document.getElementById('formFields');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const submitBtn = document.getElementById('submitBtn');
+
+// Create cards
+areas.forEach((area, index) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = area.id;
+    card.innerHTML = `
+        <div class="card-header">
+            <div class="icon-circle">
+                <i class="icon fas ${area.icon}"></i>
+            </div>
+            <div class="card-name">${area.name}</div>
+        </div>
+        <div class="card-details">${area.details}</div>
+    `;
+    card.style.animationDelay = `${index * 0.1}s`;
+    card.addEventListener('click', () => {
+        card.classList.toggle('selected');
+    });
+    cardContainer.appendChild(card);
+});
+
+// Next button event listener
+document.getElementById('nextButton').addEventListener('click', () => {
+    const selectedCards = document.querySelectorAll('.card.selected');
+    selectedSteps = Array.from(selectedCards).map(card => card.id);
+    console.log('Selected areas:', selectedSteps);
+    
+    if (selectedSteps.length > 0) {
+        // Show the form container
+        const formContainer = document.querySelector('.container');
+        formContainer.style.display = 'block';
+        
+        initializeSteps();
+        showCurrentStep();
+        
+        // Force layout recalculation
+        void formContainer.offsetHeight;
+        
+        // Scroll to the form section
+        formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // Additional forced scroll after a short delay
+        setTimeout(() => {
+            window.scrollTo({
+                top: formContainer.offsetTop,
+                behavior: 'smooth'
+            });
+        }, 100);
+    } else {
+        alert('Please select at least one area to proceed.');
+    }
+});
+function initializeSteps() {
+    const stepList = document.getElementById('stepList');
+    stepList.innerHTML = '';
+    
+    selectedSteps.forEach((stepId, index) => {
+        const step = areas.find(area => area.id === stepId);
+        const stepItem = document.createElement('div');
+        stepItem.className = 'step-item';
+        stepItem.id = `step-${step.id}`;
+        
+        stepItem.innerHTML = `
+            <div class="step-icon"><i class="fas ${step.icon}"></i></div>
+            <div class="step-name">${step.name}</div>
+        `;
+        
+        stepItem.addEventListener('click', () => goToStep(index));
+        
+        stepList.appendChild(stepItem);
+    });
+}
+
+function goToStep(stepIndex) {
+    if (stepIndex !== currentStep) {
+        saveStepData();
+        currentStep = stepIndex;
+        showCurrentStep();
+    }
+}
+
+function validateStep() {
+    let isValid = true;
+    const inputs = document.querySelectorAll('#formFields input, #formFields select');
+    
+    inputs.forEach(input => {
+        if (input.value.trim() === '') {
+            isValid = false;
+            showError(input, 'This field is required');
+        } else {
+            clearError(input);
+        }
+    });
+
+    return isValid;
+}
+
+function showError(input, message) {
+    clearError(input);
+    const error = document.createElement('div');
+    error.className = 'error-message';
+    error.textContent = message;
+    input.parentNode.insertBefore(error, input.nextSibling);
+}
+
+function clearError(input) {
+    const errorMessage = input.nextElementSibling;
+    if (errorMessage && errorMessage.classList.contains('error-message')) {
+        errorMessage.remove();
+    }
+}
+
+function updateStepVisuals() {
+    const stepItems = document.querySelectorAll('.step-item');
+    stepItems.forEach((item, index) => {
+        if (index === currentStep) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
+    });
+}
+
+function saveStepData() {
+    const currentStepId = selectedSteps[currentStep];
+    const inputs = document.querySelectorAll('#formFields input, #formFields select');
+    formData[currentStepId] = formData[currentStepId] || {};
+    inputs.forEach(input => {
+        formData[currentStepId][input.id] = input.value;
+    });
+}
+
+function restoreStepData(stepId) {
+    if (formData[stepId]) {
+        Object.keys(formData[stepId]).forEach(inputId => {
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.value = formData[stepId][inputId];
+            }
+        });
+    }
+}
+
+function showCurrentStep() {
+    formFieldsContainer.classList.add('fade-out');
+
+    setTimeout(() => {
+        const currentStepId = selectedSteps[currentStep];
+        formFieldsContainer.innerHTML = formFields[currentStepId];
+        
+        restoreStepData(currentStepId);
+        
+        formFieldsContainer.classList.remove('fade-out');
+
+        updateStepVisuals();
+
+        prevBtn.classList.toggle('hidden', currentStep === 0);
+        nextBtn.classList.toggle('hidden', currentStep === selectedSteps.length - 1);
+        submitBtn.classList.toggle('hidden', currentStep !== selectedSteps.length - 1);
+
+        addInputListeners();
+
+        if (currentStepId === 'energyLeaks') {
+            const energyLeaksSelect = document.getElementById('energyLeaks');
+            energyLeaksSelect.addEventListener('change', function() {
+                const urlField = document.getElementById('energyLeaksUrl');
+                urlField.classList.toggle('hidden', this.value === '');
+            });
+            energyLeaksSelect.dispatchEvent(new Event('change'));
+        } else if (currentStepId === 'energyUtilization') {
+            const energyUtilizationSelect = document.getElementById('energyUtilization');
+            energyUtilizationSelect.addEventListener('change', function() {
+                const credentialsField = document.getElementById('cloudCredentials');
+                credentialsField.classList.toggle('hidden', this.value === '');
+            });
+            energyUtilizationSelect.dispatchEvent(new Event('change'));
+        } else if (currentStepId === 'taggingResources') {
+            const taggingResourcesSelect = document.getElementById('taggingResources');
+            taggingResourcesSelect.addEventListener('change', function() {
+                const credentialsField = document.getElementById('taggingCredentials');
+                credentialsField.classList.toggle('hidden', this.value === '');
+            });
+            taggingResourcesSelect.dispatchEvent(new Event('change'));
+        }
+
+    }, 300);
+}
+
+function nextStep() {
+    if (validateStep()) {
+        saveStepData();
+        if (currentStep < selectedSteps.length - 1) {
+            currentStep++;
+            showCurrentStep();
+        }
+    }
+}
+
+function prevStep() {
+    if (currentStep > 0) {
+        saveStepData();
+        currentStep--;
+        showCurrentStep();
+    }
+}
+
+function addInputListeners() {
+    const inputs = document.querySelectorAll('#formFields input, #formFields select');
+    inputs.forEach(input => {
+        input.addEventListener('input', () => {
+            saveStepData();
+        });
+    });
+}
+
+nextBtn.addEventListener('click', nextStep);
+prevBtn.addEventListener('click', prevStep);
+
+document.getElementById('projectForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    saveStepData();
+    console.log('Form submitted!', formData);
+    alert('Form submitted successfully!');
+    triggerJenkinsBuild(formData);
+});
+
+function triggerJenkinsBuild(formData) {
+    console.log("Triggering Jenkins build with form data:", formData);
+    // Here you would typically make an API call to your backend to trigger the Jenkins build
+    // For this example, we'll just log the data to the console
+    alert('Jenkins build triggered with the collected data.');
+}
+
+
+
+</script>
+</body>
+</html>
