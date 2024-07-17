@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GSMM</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="icon" href="https://www.svgrepo.com/show/923/leaf.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+
+/* :root {
+            --primary-color: #4caf50;
+            --primary-light: #4caf50;
+            --primary-dark: #4caf50;
+            --secondary-color: #FFC107;
+            --text-color: #333333;
+            --background-color: #F5F5F5;
+            --card-background: #FFFFFF;
+        } */
+        *{
+            font-family: "Montserrat", sans-serif;
+        }
+
+        .form-container {
+            max-width:950px;
+            margin: 50px auto;
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 20px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn{
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .form-titile{
+            text-align: center;
+            color: #000000;
+            margin-bottom: 20px;
+            font-size:20px ;
+        }
+
+        .step-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .steps-row {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        #formFields {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        #formFields.fade-out {
+            opacity: 0;
+        }
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .step-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+        }
+        .step-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        .step-name {
+            font-size: 12px;
+            text-align: center;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        .step-line {
+            flex-grow: 1;
+            height: 2px;
+            background-color: #ccc;
+            margin: 15px 5px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .step-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #4caf50;
+            transition: width 0.5s ease;
+        }
+
+        .step-line.completed::after {
+            width: 100%;
+        }
+
+        .step.active .step-icon {
+            background-color: #4caf50;
+        }
+
+        .step.completed .step-icon {
+            background-color: #4caf50;
+        }
+
+        .step.skipped .step-icon {
+            background-color: #808080;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: flex;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #4caf50;
+        }
+
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus, select:focus {
+            border-color: #4caf50;
+            outline: none;
+            box-shadow: 0 0 0 2px #4caf50;
+            transform: translateY(-2px);
+
+        }
+
+        button {
+            /* display: flex;
+            flex-direction: column;
+            align-items: flex-start; */
+            background-color: #4caf50;
+            font-weight: bold;
+            color: white;
+            padding: 9px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+        .buttons-flex{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .skipandnext{
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            width: 100%; 
+        }
+
+        #skipBtn{
+            margin-right: 20px;
+        }
+
+        button:hover {
+            background-color: #4caf50;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+            animation: shakeError 0.4s ease-in-out;
+        }
+        @keyframes shakeError {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        h3{
+            font-weight: bold;
+        }
+
+        #formFields {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        #formFields.fade-out {
+            opacity: 0;
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+
+        @keyframes slideOutRight {
+            from { transform: translateX(0); }
+            to { transform: translateX(100%); }
+        }
+
+        @keyframes slideOutLeft {
+            from { transform: translateX(0); }
+            to { transform: translateX(-100%); }
+        }
+
+        .slide-in-right {
+            animation: slideInRight 0.3s forwards;
+        }
+
+        .slide-in-left {
+            animation: slideInLeft 0.3s forwards;
+        }
+
+        .slide-out-right {
+            animation: slideOutRight 0.3s forwards;
+        }
+
+        .slide-out-left {
+            animation: slideOutLeft 0.3s forwards;
+        }
+
+        #formFields {
+            position: relative;
+            overflow: hidden;
+        }
+
+    *{
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: "Montserrat", sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden; 
+      /* Hide horizontal scrollbar */
+      display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    /* height: 100vh; */
+    margin: 0;
+    }
+    .main-content {
+      height: 100vh; /* Initially occupies full viewport height */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: left;
+    }
+    .text-section {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      transform: translateY(-50%);
+      z-index: 5;
+      color: black;
+      max-width: 600px;
+      padding: 40px;
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      max-width: 500px;
+    }
+    body {
+  scroll-behavior: smooth;
+}
+
+    .cta-button, .get-report {
+      display: inline-block;
+      padding: 15px 35px;
+      background-color: #4caf50;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+      transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      transition: smooth;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .cta-button:hover, .get-report:hover {
+      background-color: #45a049;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+    .image-section {
+  position: absolute;
+  top: 0;
+  right: 0; /* Move the image to the right */
+  width: 85%; /* Adjust the width of the image section */
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+    .image-section img {
+      position: absolute;
+      top: 0;
+      right: 0;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: cover;
+    }
+    .image-section::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to left, 
+                rgba(255, 255, 255, 0) 0%, 
+                rgba(255, 255, 255, 0.3) 30%, 
+                rgba(255, 255, 255, 0.7) 60%, 
+                rgba(255, 255, 255, 0.9) 80%,
+                rgba(255, 255, 255, 1) 100%);
+      z-index: 2;
+    }
+    /* h1, h2 {
+      margin-top: 30px;
+      font-size: 28px;
+   
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    } */
+    button{
+      font-family: "Montserrat", sans-serif;
+      font-optical-sizing: auto;
+      /* font-weight: <weight>; */
+      font-style: normal;
+    }
+    table {
+      width: 80%;
+      max-width: 1100px;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 30px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: white;
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+      vertical-align: top;
+    }
+    th {
+      background-color: #f2f2f2;
+      /* background-image: linear-gradient(to right, #6a6b6a, #e5e7e4); */
+      color: rgb(0, 0, 0);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 14px;
+    }
+    td {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #444;
+    }
+    tr:hover td {
+      background-color: #f5f5f5;
+      transition: background-color 0.3s ease;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    td:first-child {
+      font-weight: 600;
+      color: #333;
+      border-right: 1px solid #e0e0e0;
+      background-color: #f9f9f9;
+      width: 20%;
+    }
+    tr:nth-child(even) {
+      background-color: #fbfbfb;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 8px;
+    }
+    li:before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      font-size: 1.2em;
+      line-height: 1;
+    }
+    #detailedInfoBtn {
+      margin-top: 25px;
+      padding: 14px 35px;
+      background-color: white;
+      color: #4caf50;
+      border: 2px solid #4caf50;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      font-size: 16px;
+      outline: none;
+      font-weight: bold;
+      border-radius: 5px;
+      transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 50px;
+    }
+    #detailedInfoBtn:hover {
+      background-image: linear-gradient(to right, #4caf50, #8bc34a);
+      border: none;
+      color: white;
+      box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+      transform: translateY(-2px);
+    }
+    #detailedInfoBtn:active {
+      transform: translateY(1px);
+      box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    }
+    .maturity-level {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin: 20px 0;
+      padding: 15px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-left: 5px solid #4caf50;
+    }
+    .table-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .yes-desc {
+      color: #4caf50;  /* Green color for "yes" descriptions */
+    }
+    .no-desc {
+      color: #f44336;  /* Red color for "no" descriptions */
+    }
+    .yes-desc:before {
+      color: #4caf50;  /* Green bullet for "yes" descriptions */
+    }
+    .no-desc:before {
+      color: #f44336;  /* Red bullet for "no" descriptions */
+    }
+    .progress-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      width: 80%;
+      margin-top: 10%;
+      max-width: 800px;
+      margin-bottom: 20px;
+    }
+    .progress-bar {
+      width: 18%;
+      height: 15px;
+      background-color: #e0e0e0;
+      border-radius: 10px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 10px; /* Adjust as needed */
+    }
+    .progress-bar::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #333;
+    }
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, #4caf50, #8bc34a);
+      /* background: linear-gradient(to right, #f44336, #f44336); Red color */
+      transform: translateX(-100%);
+      transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    .progress-bar.fill-1::after { transition-delay: 0.0s; }
+    .progress-bar.fill-2::after { transition-delay: 0.8s; }
+    .progress-bar.fill-3::after { transition-delay: 1.6s; }
+    .progress-bar.fill-4::after { transition-delay: 2.4s; }
+    .progress-bar.fill-5::after { transition-delay: 3.2s; }
+    .progress-bar.filled::after {
+      transform: translateX(0);
+    }
+
+    .progress-bar.current::after {
+      box-shadow: 0 0 10px 3px rgba(76, 175, 80, 0.5);
+    }
+    .progress-bar:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      right: -15px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 10px;
+      height: 10px;
+      background-color: #e0e0e0;
+      border-radius: 50%;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 10px 3px rgba(76, 175, 80, 0.5); }
+      50% { box-shadow: 0 0 20px 5px rgba(76, 175, 80, 0.7); }
+    }
+    html,
+body {
+  scroll-behavior: smooth;
+}
+
+.container {
+  overflow-y: hidden;
+  height: 100vh;
+}
+
+.main-content {
+  padding-bottom: 200px; /* Adjust to accommodate space for the progress bars */
+}
+.maturity-description {
+  font-size: 5rem;
+  opacity: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0 20px;
+  margin: 0 auto; /* Center the element horizontally */
+  text-align: center;
+  transition: opacity 0.3s ease;
+  display: flex; /* Enable flexbox layout */
+  justify-content: stretch; /* Center the content horizontally */
+  flex-direction: column; /* Stack child elements vertically */
+  align-items: center; /* Center child elements horizontally */
+}
+
+.maturity-description p {
+  margin: 0; /* Remove default margin for <p> tags */
+}
+.maturity-description-container {
+  width: 100%;
+  display: flex;
+  justify-content: stretch;
+}
+.link-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding-bottom: 5px;
+}
+
+#prechecks-group label{
+    font-size: 14px;
+    font-weight: 100;
+    color: black;
+    margin: 0px 0px;
+}
+
+.link-text {
+  position: relative;
+  z-index: 1;
+  flex-grow: 1;
+}
+
+.previous-reports{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.link-container::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background-color: #4caf50;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease-out;
+}
+
+.link-container:hover::before {
+  transform: scaleX(1);
+}
+
+#redirection {
+  width: 16px;
+  height: 16px;
+  margin-left: 5px;
+  opacity: 0; /* Initially hide the icon */
+  transition: opacity 0.3s ease-in-out 0.28s; /* Add a smooth transition */
+}
+
+.link-container:hover #redirection {
+  opacity: 1; /* Show the redirect icon when hovering over the link container */
+}
+#select-cloud, #select-project {
+  font-family: 'Montserrat', sans-serif;
+  padding: 6px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #333;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  animation: fadeInUp 1s ease;
+  margin: 10px;
+  padding-right: 90px;
+}
+
+#select-cloud {
+  padding-right: 222px;
+  /* font-weight: bold; */
+}
+
+#select-cloud-label {
+  font-weight: bold;
+  margin-right: 10px;
+  padding-right: 9px;
+}
+#select-project-label{
+  font-weight: bold;
+  /* margin-right: 10px; */
+  /* padding-right: 9px; */
+}
+
+#select-cloud, #select-project:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* padding: 30px 100px; */
+  padding-top: 30px;
+  padding-bottom: 30px;
+  width: 100%;
+  font-weight: bold;
+  color: black;
+}
+
+/* .select-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%;
+} */
+
+
+
+.report-button {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.select-card {
+  margin-top: 100px;
+  background-color: #fff;
+  border-radius: 11px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  padding: 30px 150px;
+  animation: fadeInUp 1s ease;
+  position: relative;
+  overflow: hidden;
+}
+.progress-maturity-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 3%;
+  margin-bottom: 20px;
+}
+.radio{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 6% 0%;
+}
+#wo_sus{
+  margin-right: 30px;
+}
+#implementedTableBody{
+  font-weight: bold;
+}
+/* Rest of your CSS styles */
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="main-content">
+      <section class="text-section">
+        <h1>Green Software Maturity Matrix</h1>
+        <p>Assess and improve software's environmental impact with comprehensive matrix.</p>
+        <a href="#form-container" class="cta-button">Take Action</a>
+      </section>
+      <section class="image-section">
+        <img src="https://si-interactive.s3.amazonaws.com/prod/plansponsor-com/wp-content/uploads/2021/01/19163836/PS-011921-Union-Pension-Funding-Progress-Under-Dem-Leadership-1273822951-web.jpg" alt="Progress Chart">
+      </section>
+    </div>
+  </div>
+  <div class="form-with-previous-button" id="form-with-previous-button" style="display: none;">
+  <div class="form-container" id="form-container" >
+    <h1 class="form-titile">Select areas to implement</h1>
+    <div class="step-container" id="stepContainer"></div>
+    <form id="projectForm">
+        <div id="projectNameField" class="form-group">
+            <label for="projectName">Project Name</label>
+            <input type="text" id="projectName" name="projectName" required>
+        </div>
+        <div id="formFields"></div>
+        <div class="buttons-flex">
+            <button type="button" id="prevBtn" class="hidden" style="font-weight: 600;">Previous</button>
+            <div class="skipandnext">
+                <button type="button" id="skipBtn" style="font-weight: 600;">Skip</button>
+                <button type="button" id="nextBtn" style="font-weight: 600;">Next</button>
+                <button type="submit" id="submitBtn" class="hidden">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="previous-reports" id="previous-reports"><a href="#select-card" style="color: #45a049; font-weight: bold;">See Previous Reports</a></div>
+</div>
+    <div class="select-card" id="select-card" style="display: none;">
+        <div class="selection-top">
+            <div class="selection">
+                <div class="select-group">
+                  <label id="select-project-label">Select Project</label>
+                  <select id="select-project">
+                      <!-- <option value="">Platform Engineering</option> -->
+                      <!-- <option value="project2">PE - GSSM</option> -->
+                      <!-- <option value="project3">Project 3</option> -->
+                  </select>
+                  <button id="reload-options">
+                    <img src="reload-icon.png" alt="Reload Options">
+                  </button>
+                </div>
+                <div class="select-group">
+                  <!-- <label id="select-cloud-label">Select Cloud</label> -->
+                  <!-- <select id="select-cloud"> -->
+                      <!-- <option value="aws">AWS</option> -->
+                      <!-- <option value="azure">Azure</option>
+                      <option value="gcp">GCP</option> -->
+                  </select>
+                </div>
+                <div class="radio">
+                  <input type="radio" id="html" name="fav_language" value="project1" checked>
+                    <label for="html" id="wo_sus">Before GreenTech</label><br>
+                    <input type="radio" id="css" name="fav_language" value="project2">
+                    <label for="css">After GreenTech</label><br>
+                </div>
+                
+            </div>
+        </div>
+        <div class="report-button" >
+            <a href="#page2" class="get-report">Get Report</a>
+        </div>
+    </div>
+    <div class="progress-maturity-container">
+        <div id="page2" class="progress-container" style="display: none;" >
+            <div class="progress-bar" data-label="Level 1"></div>
+            <div class="progress-bar" data-label="Level 2"></div>
+            <div class="progress-bar" data-label="Level 3"></div>
+            <div class="progress-bar" data-label="Level 4"></div>
+            <div class="progress-bar" data-label="Level 5"></div>
+        </div>
+        <div id="mat-level" class="maturity-level" style="display: none;">Current Maturity Level: Loading...</div>
+        <div class="maturity-description-container">
+            <div class="maturity-description"></div>
+        </div>
+    </div>
+        <button id="detailedInfoBtn" style="display: none;">Detailed Info</button>
+
+        <div class="table-container">
+            <table id="implementedTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Implemented Areas</th>
+                        <th>Areas to be Focused</th>
+                    </tr>
+                </thead>
+                    <tbody id="implementedTableBody"></tbody>
+            </table>
+        </div>
+    <!-- </div> -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    fetch('/project_names')
+      .then(response => response.json())
+      .then(data => {
+        const selectProject = document.getElementById('select-project');
+        data.forEach(projectName => {
+          const option = document.createElement('option');
+          option.value = projectName;
+          option.textContent = projectName;
+          selectProject.appendChild(option);
+        });
+      })
+      .catch(error => console.error('Error fetching project names:', error));
+  });
+
+    let formData = {
+    projectName: ''
+};
+const steps = [
+    { id: 'energyLeaks', name: 'Energy Leaks', icon: 'fa-bolt' },
+    { id: 'mlJobConsumption', name: 'ML Job Consumption', icon: 'fa-microchip' },
+    { id: 'energyMetrics', name: 'Energy Metrics', icon: 'fa-chart-line' },
+    { id: 'workloadBenchmarking', name: 'Workload Benchmarking', icon: 'fa-tachometer-alt' },
+    { id: 'energyUtilization', name: 'Energy Utilization', icon: 'fa-plug' },
+    { id: 'resourceProvisioning', name: 'Resource Provisioning', icon: 'fa-server' },
+    { id: 'turnOffWorkloads', name: 'Turn Off Workloads', icon: 'fa-power-off' },
+    { id: 'unusedResources', name: 'Unused Resources', icon: 'fa-trash-alt' },
+    { id: 'taggingResources', name: 'Tagging Resources', icon: 'fa-tags' },
+    { id: 'prechecks', name: 'Prechecks', icon: 'fa-clipboard-check' }
+];
+
+const formFields = {
+    energyLeaks: `
+        <h3>Energy Leaks</h3>
+        <div class="form-group">
+            <label for="energyLeaks">Select language</label>
+            <select id="energyLeaks" name="energyLeaks">
+                <option value="">Select language</option>
+                <option value="java">Java</option>
+                <option value="python">Python</option>
+            </select>
+        </div>
+        <div id="energyLeaksUrl" class="form-group hidden">
+            <label for="projectUrl">Project URL</label>
+            <input type="text" id="projectUrl" name="projectUrl">
+             <label for="projectUrlbranch">Branch</label>
+            <input type="text" id="projectUrlbranch" name="projectUrlbranch">
+        </div>
+        
+    `,
+    mlJobConsumption: `
+        <h3>ML Job Energy Consumption</h3>
+        <div class="form-group">
+            <label for="mlJobConsumption">Code URL</label>
+            <input type="text" id="mlJobConsumption" name="mlJobConsumption" placeholder="Enter code URL">
+        </div>
+    `,
+    energyMetrics: `
+        <h3>Energy Metrics (Intel RAPL)</h3>
+        <div class="form-group">
+            <label for="serverIp">Server IP</label>
+            <input type="text" id="serverIp" name="serverIp" placeholder="Enter server IP">
+        </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter username">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter password">
+        </div>
+    `,
+    workloadBenchmarking: `
+        <h3>Workload Benchmarking</h3>
+        <div class="form-group">
+            <label for="workloadBenchmarking">Select processor</label>
+            <select id="workloadBenchmarking" name="workloadBenchmarking">
+                <option value="">Select processor</option>
+                <option value="intel">Intel</option>
+                <option value="amd">AMD</option>
+            </select>
+        </div>
+    `,
+    energyUtilization: `
+        <h3>Energy Utilization</h3>
+        <div class="form-group">
+            <label for="energyUtilization">Select cloud provider</label>
+            <select id="energyUtilization" name="energyUtilization">
+                <option value="">Select cloud provider</option>
+                <option value="aws">AWS</option>
+                <option value="azure">Azure</option>
+                <option value="gcp">GCP</option>
+            </select>
+        </div>
+        <div id="cloudCredentials" class="hidden">
+            <div class="form-group">
+                <label for="accessKey">Access Key</label>
+                <input type="text" id="accessKey" name="accessKey" placeholder="Enter ACCESS KEY">
+            </div>
+            <div class="form-group">
+                <label for="secretKey">Secret Key</label>
+                <input type="password" id="secretKey" name="secretKey" placeholder="Enter SECRET KEY">
+            </div>
+        </div>
+    `,
+    resourceProvisioning: `
+        <h3>Resource Provisioning</h3>
+        <div class="form-group">
+            <label for="resourceProvisioning">Jenkins pipeline URL</label>
+            <input type="text" id="resourceProvisioning" name="resourceProvisioning" placeholder="Enter Jenkins pipeline URL">
+        </div>
+    `,
+    turnOffWorkloads: `
+        <h3>Turn Off Workloads</h3>
+        
+        <div class="form-group">
+            <label for="turnOffWorkloads">Time range</label>
+            <p style="font-size:13px; font-style:italic;">Workloads will be turned off automatically everyday at this time</p>
+            <p style="font-size:13px; display: inline; padding-right:10px;">Start</p><input type="time" id="starttime" name="starttime" placeholder="Enter time range">
+            
+        </div>
+    `,
+    unusedResources: `
+        <h3>Unused Resources</h3>
+        <div class="form-group">
+            <label for="unusedResources">Select cloud provider</label>
+            <select id="unusedResources" name="unusedResources">
+                <option value="">Select cloud provider</option>
+                <option value="aws">AWS</option>
+                <option value="azure">Azure</option>
+                <option value="gcp">GCP</option>
+            </select>
+        </div>
+        <div id="unusedResourcesCreds" class="hidden">
+            <div class="form-group">
+                <label for="unusedResourcesAccessKey">Access Key</label>
+                <input type="text" id="unusedResourcesAccessKey" name="unusedResourcesAccessKey" placeholder="Enter ACCESS KEY">
+            </div>
+            <div class="form-group">
+                <label for="unusedResourcesSecretKey">Secret Key</label>
+                <input type="password" id="unusedResourcesSecretKey" name="unusedResourcesSecretKey" placeholder="Enter SECRET KEY">
+            </div>
+        </div>
+    `,
+    taggingResources: `
+        <h3>Tagging Resources</h3>
+        <div class="form-group">
+            <label for="taggingResources">Select cloud provider</label>
+            <select id="taggingResources" name="taggingResources">
+                <option value="">Select cloud provider</option>
+                <option value="aws">AWS</option>
+                <option value="azure">Azure</option>
+                <option value="gcp">GCP</option>
+            </select>
+        </div>
+        <div id="taggingCredentials" class="hidden">
+            <div class="form-group">
+                <label for="taggingAccessKey">Access Key</label>
+                <input type="text" id="taggingAccessKey" name="taggingAccessKey" placeholder="Enter ACCESS KEY">
+            </div>
+            <div class="form-group">
+                <label for="taggingSecretKey">Secret Key</label>
+                <input type="password" id="taggingSecretKey" name="taggingSecretKey" placeholder="Enter SECRET KEY">
+            </div>
+        </div>
+    `,
+    prechecks: `
+        <h3>Prechecks</h3>
+        <div class="form-group" id="prechecks-group">
+                <label><input type="checkbox" name="prechecks[]" value="tool1">Check if GIT is reachable</label><br>
+                <label><input type="checkbox" name="prechecks[]" value="tool2">Check available memory on server</label><br>
+                <label><input type="checkbox" name="prechecks[]" value="tool3">Check if Maven installed</label><br>
+                <label><input type="checkbox" name="prechecks[]" value="tool4">Check if SonarQube is reachable</label><br>
+                <label><input type="checkbox" name="prechecks[]" value="tool5">Check if Kubernetes available</label><br>
+                <label><input type="checkbox" name="prechecks[]" value="tool6">Check if Docker Registry reachable</label><br>
+                <label><input type="checkbox" name="prechecks[]" value="tool7"> Check if Jenkins nodes (build agents) are online</label><br>
+        </div>
+    `
+};
+
+let currentStep = 0;
+const stepContainer = document.getElementById('stepContainer');
+const formFieldsContainer = document.getElementById('formFields');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const skipBtn = document.getElementById('skipBtn');
+const submitBtn = document.getElementById('submitBtn');
+
+function initializeSteps() {
+    const stepsRow = document.createElement('div');
+    stepsRow.className = 'steps-row';
+    stepContainer.appendChild(stepsRow);
+
+    steps.forEach((step, index) => {
+        const stepElement = document.createElement('div');
+        stepElement.className = 'step';
+        stepElement.id = `step-${step.id}`;
+
+        const stepIcon = document.createElement('div');
+        stepIcon.className = 'step-icon';
+        stepIcon.innerHTML = `<i class="fas ${step.icon}"></i>`;
+
+        stepIcon.addEventListener('click', () => goToStep(index));
+
+        const stepName = document.createElement('div');
+        stepName.className = 'step-name';
+        stepName.textContent = step.name;
+
+        stepElement.appendChild(stepIcon);
+        stepElement.appendChild(stepName);
+        stepsRow.appendChild(stepElement);
+
+        if (index < steps.length - 1) {
+            const lineElement = document.createElement('div');
+            lineElement.className = 'step-line';
+            stepsRow.appendChild(lineElement);
+        }
+    });
+}
+
+function goToStep(stepIndex) {
+    if (stepIndex !== currentStep) {
+        saveStepData();
+        currentStep = stepIndex;
+        showCurrentStep();
+    }
+}
+
+function validateStep() {
+    let isValid = true;
+
+    // Check project name first
+    const projectNameInput = document.getElementById('projectName');
+    if (projectNameInput.value.trim() === '') {
+        isValid = false;
+        showError(projectNameInput, 'Please enter a project name');
+    } else {
+        clearError(projectNameInput);
+    }
+
+    // Only validate other fields if project name is filled
+    if (isValid) {
+        const currentStepId = steps[currentStep].id;
+        const inputs = document.querySelectorAll(`#formFields input, #formFields select`);
+        
+        inputs.forEach(input => {
+            if (input.value.trim() === '') {
+                isValid = false;
+                showError(input, 'This field is required');
+            } else {
+                clearError(input);
+            }
+        });
+    }
+
+    return isValid;
+}
+
+function showError(input, message) {
+    clearError(input);
+    const error = document.createElement('div');
+    error.className = 'error-message';
+    error.textContent = message;
+    input.parentNode.insertBefore(error, input.nextSibling);
+}
+
+function clearError(input) {
+    const errorMessage = input.nextElementSibling;
+    if (errorMessage && errorMessage.classList.contains('error-message')) {
+        errorMessage.remove();
+    }
+}
+
+function updateStepVisuals() {
+    steps.forEach((step, index) => {
+        const stepElement = document.getElementById(`step-${step.id}`);
+        if (index < currentStep) {
+            const lineElement = stepContainer.querySelector(`.steps-row > .step-line:nth-child(${index * 2 + 2})`);
+            if (lineElement) {
+                lineElement.classList.add('completed');
+            }
+        }
+        if (index === currentStep) {
+            stepElement.classList.add('active');
+        } else {
+            stepElement.classList.remove('active');
+        }
+    });
+}
+
+function saveStepData() {
+    const currentStepId = steps[currentStep].id;
+    const inputs = document.querySelectorAll('#formFields input, #formFields select');
+    formData[currentStepId] = formData[currentStepId] || {};
+    inputs.forEach(input => {
+        formData[currentStepId][input.id] = input.value;
+    });
+    
+    // Save project name
+    const projectNameInput = document.getElementById('projectName');
+    formData.projectName = projectNameInput.value;
+}
+
+function restoreStepData(stepId) {
+    if (formData[stepId]) {
+        Object.keys(formData[stepId]).forEach(inputId => {
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.value = formData[stepId][inputId];
+            }
+        });
+    }
+    
+    // Restore project name
+    const projectNameInput = document.getElementById('projectName');
+    projectNameInput.value = formData.projectName || '';
+}
+
+let isMovingForward = true;
+
+function showCurrentStep() {
+    formFieldsContainer.classList.add('fade-out');
+
+    setTimeout(() => {
+        formFieldsContainer.innerHTML = formFields[steps[currentStep].id];
+        
+        restoreStepData(steps[currentStep].id);
+        
+        formFieldsContainer.classList.remove('fade-out');
+
+        updateStepVisuals();
+
+        prevBtn.classList.toggle('hidden', currentStep === 0);
+        nextBtn.classList.toggle('hidden', currentStep === steps.length - 1);
+        submitBtn.classList.toggle('hidden', currentStep !== steps.length - 1);
+
+        addInputListeners();
+
+        steps.forEach((step, index) => {
+            const stepElement = document.getElementById(`step-${step.id}`);
+            const stepIcon = stepElement.querySelector('.step-icon');
+            if (index > currentStep) {
+                // stepIcon.style.pointerEvents = 'none';
+                stepIcon.style.opacity = '0.5';
+            } else {
+                stepIcon.style.pointerEvents = 'auto';
+                stepIcon.style.opacity = '1';
+            }
+        });
+
+        if (steps[currentStep].id === 'energyLeaks') {
+            const energyLeaksSelect = document.getElementById('energyLeaks');
+            energyLeaksSelect.addEventListener('change', function() {
+                const urlField = document.getElementById('energyLeaksUrl');
+                urlField.classList.toggle('hidden', this.value === '');
+            });
+            energyLeaksSelect.dispatchEvent(new Event('change'));
+        } else if (steps[currentStep].id === 'energyUtilization') {
+            const energyUtilizationSelect = document.getElementById('energyUtilization');
+            energyUtilizationSelect.addEventListener('change', function() {
+                const credentialsField = document.getElementById('cloudCredentials');
+                credentialsField.classList.toggle('hidden', this.value === '');
+            });
+            energyUtilizationSelect.dispatchEvent(new Event('change'));
+        } else if (steps[currentStep].id === 'unusedResources') {
+            const unusedResourcesSelect = document.getElementById('unusedResources');
+            unusedResourcesSelect.addEventListener('change', function() {
+                const credentialsField = document.getElementById('unusedResourcesCreds');
+                credentialsField.classList.toggle('hidden', this.value === '');
+            });
+            unusedResourcesSelect.dispatchEvent(new Event('change'));
+        } else if (steps[currentStep].id === 'taggingResources') {
+            const taggingResourcesSelect = document.getElementById('taggingResources');
+            taggingResourcesSelect.addEventListener('change', function() {
+                const credentialsField = document.getElementById('taggingCredentials');
+                credentialsField.classList.toggle('hidden', this.value === '');
+            });
+            taggingResourcesSelect.dispatchEvent(new Event('change'));
+        }
+
+    }, 300);
+}
+
+function nextStep() {
+    if (validateStep()) {
+        saveStepData();
+        const currentStepElement = document.getElementById(`step-${steps[currentStep].id}`);
+        currentStepElement.classList.add('completed');
+        if (currentStep < steps.length - 1) {
+            currentStep++;
+            showCurrentStep();
+        }
+    }
+}
+
+function prevStep() {
+    if (currentStep > 0) {
+        saveStepData();
+        currentStep--;
+        showCurrentStep();
+    }
+}
+
+function skipStep() {
+    saveStepData();
+    const currentStepId = steps[currentStep].id;
+    const stepElement = document.getElementById(`step-${currentStepId}`);
+    stepElement.classList.add('skipped');
+    if (currentStep < steps.length - 1) {
+        currentStep++;
+        showCurrentStep();
+    }
+}
+
+function addInputListeners() {
+    const inputs = document.querySelectorAll('#formFields input, #formFields select');
+    inputs.forEach(input => {
+        input.addEventListener('input', () => {
+            saveStepData();
+        });
+    });
+}
+
+nextBtn.addEventListener('click', nextStep);
+prevBtn.addEventListener('click', prevStep);
+skipBtn.addEventListener('click', skipStep);
+
+document.getElementById('projectForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    saveStepData();
+    console.log('Form submitted!', formData);
+    // alert('Form submitted successfully!');
+    triggerJenkinsBuild(formData);
+});
+
+const projectNameInput = document.getElementById('projectName');
+projectNameInput.addEventListener('input', function() {
+    formData.projectName = this.value;
+});
+
+initializeSteps();
+showCurrentStep();
+
+function triggerJenkinsBuild(formData) {
+    console.log("entry level ",formData)
+    const formObject = {};
+    for (const step in formData) {
+        if (typeof formData[step] === 'object') {
+            for (const field in formData[step]) {
+                formObject[field] = formData[step][field];
+            }
+        } else {
+            formObject[step] = formData[step];
+        }
+    }
+    
+    fetch('/trigger-jenkins', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('Pipeline triggered successfully !');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error occurred during POST request');
+            });
+}
+    window.onload = function() {
+        let reportClicked = false;
+        let baseUrl = "http://10.63.14.112:3001/";
+        let levelsEndpoint = baseUrl;
+        let implementedYesEndpoint = "http://10.63.14.112:3001/implemented_yes";
+        let implementedNoEndpoint = "http://10.63.14.112:3001/implemented_no";
+        // Function to handle "Get Report" button click
+        
+    document.querySelector('.get-report').addEventListener('click', function() {
+        reportClicked = true;
+        // clearElements();
+        
+        const selectedProject = document.querySelector('input[name="fav_language"]:checked').value;
+        // console.log(implementedNoEndpoint, implementedYesEndpoint, levelsEndpoint);
+        
+        if (selectedProject === "project2") {
+            levelsEndpoint = "http://10.63.14.112:3001/";
+            implementedYesEndpoint = "http://10.63.14.112:3001/implemented_yes";
+            implementedNoEndpoint = "http://10.63.14.112:3001/implemented_no";
+            console.log(implementedNoEndpoint, implementedYesEndpoint, levelsEndpoint);
+        }
+        if (selectedProject === "project1") {
+            levelsEndpoint = "http://10.63.14.112:3001/levels2";
+            implementedYesEndpoint = "http://10.63.14.112:3001/implemented_yes2";
+            implementedNoEndpoint = "http://10.63.14.112:3001/implemented_no2";
+            console.log(implementedNoEndpoint, implementedYesEndpoint, levelsEndpoint);
+        }
+       
+        fetchDataAndDisplayDescription(levelsEndpoint, implementedYesEndpoint, implementedNoEndpoint); 
+        
+        document.getElementById('detailedInfoBtn').style.display = 'flex';
+        document.getElementById('mat-level').style.display = 'flex';
+        document.getElementById('page2').style.display = 'flex';
+
+    });
+    function clearElements(){
+        document.getElementById('detailedInfoBtn').style.display = 'none';
+        document.getElementById('mat-level').style.display = 'none';
+        document.getElementById('page2').style.display = 'none';
+    }
+    document.querySelector('.previous-reports').addEventListener('click', function() {
+        reportClicked = true;
+        document.getElementById('select-card').style.display = 'block';
+    });
+    document.querySelector('.cta-button').addEventListener('click', function() {
+        reportClicked = true;
+        document.getElementById('form-with-previous-button').style.display = 'block';
+    });
+    //     function updateProjectOptions(cloud) {
+    //     const projectDropdown = document.getElementById('select-project');
+    //     // Clear existing options
+    //     projectDropdown.innerHTML = '';
+    //     // Add options based on selected cloud
+    //     if (cloud === 'aws') {
+    //         projectDropdown.innerHTML += '<option value="project1">Project 1</option>';
+    //         projectDropdown.innerHTML += '<option value="project2">Project 2</option>';
+    //     } else {
+    //         // If not AWS, show no projects
+    //         projectDropdown.innerHTML += '<option value="" disabled selected>No projects</option>';
+    //     }
+    // }
+
+    // Add event listener to select cloud dropdown
+    document.getElementById('select-cloud').addEventListener('change', function() {
+        const selectedCloud = this.value;
+        // Update project options based on selected cloud
+        updateProjectOptions(selectedCloud);
+    });
+    // window.location.href = 'http://10.63.14.112:3001/index';
+    // Flag to track if "Get Report" button is clicked
+
+    // Function to fill progress bars
+    function fillProgressBars(progressLevel) {
+        const progressBars = document.querySelectorAll('.progress-bar');
+        progressBars.forEach((bar, index) => {
+            const level = index + 1;
+            if (level <= progressLevel) {
+                bar.classList.add(`fill-${level}`, 'filled');
+            } else {
+                bar.classList.remove(`fill-${level}`, 'filled');
+            }
+            // Add pulsating effect to the current level
+            setTimeout(function() {
+                if (level <= progressLevel) {
+                    bar.classList.add('current');
+                    bar.style.animation = 'pulse 2s infinite';
+                } else {
+                    bar.classList.remove('current');
+                    bar.style.animation = 'none';
+                }
+            }, progressLevel * 800);
+        });
+    }
+    
+    function clearTable() {
+    const table = document.getElementById("implementedTable");
+    table.style.display = "none";
+    document.getElementById("detailedInfoBtn").textContent = "Detailed Info";
+    // document.getElementById("implementedTableBody").innerHTML = "";
+}
+    // Function to fetch data and display maturity level description
+    function fetchDataAndDisplayDescription(levelsEndpoint, implementedYesEndpoint, implementedNoEndpoint) {
+      clearTable();
+        fetch(levelsEndpoint)
+            .then(response => response.text())
+            .then(progressLevel => {
+                // Parse the progress level as an integer
+                progressLevel = parseInt(progressLevel);
+                console.log(progressLevel);
+
+                // Update progress bars only if "Get Report" button is clicked
+                if (reportClicked) {
+                    fillProgressBars(progressLevel);
+                }
+
+                // Update the text displaying the current progress level
+                setTimeout(function() {
+                    document.querySelector('.maturity-level').innerText = `Current Maturity Level: ${progressLevel}`;
+                    const maturityDescription = document.querySelector('.maturity-description');
+                    updateMaturityLevelText(progressLevel); // Update maturity description
+                    maturityDescription.style.opacity = '1';
+                }, progressLevel * 880);
+
+            })
+            .catch(error => {
+                console.error('Error fetching progress level:', error);
+            });
+    }
+
+    
+
+    // Function to update maturity level text based on progress level
+    function updateMaturityLevelText(level) {
+        let text = "";
+        switch (level) {
+          case 1:
+            text = "At this stage, there is a lack of strategic organization regarding sustainability efforts. Limited individuals may show interest or possess knowledge, but overall, the approach is reactive rather than proactive. This represents the initial phase for most entities in their journey towards environmental consciousness.";
+            break;
+          case 2:
+            text = "Progress is noticeable, albeit inconsistent. Sustainability efforts are somewhat managed, though largely in a reactive manner. The extent of advancement varies across projects and teams. Data collection is minimal and often lacks comprehensive coverage.";
+            break;
+          case 3:
+            text = "Here, a commendable level of proficiency is achieved. There exists a fundamental understanding of green technologies and implemented for the Development and Deployment stages.";
+            break;
+          case 4:
+            text = "This level marks an impressive achievement. Progress is measured dynamically, supported by real-time data analytics. The organization demonstrates an ability to adapt and refine strategies promptly based on the insights derived from these analytics.";
+            break;
+          case 5:
+            text = "Reaching the pinnacle, organizations at this level operate at an unparalleled standard of excellence. They continuously monitor and enhance their sustainability practices based on real-time data analysis. Such entities serve as industry leaders, inspiring others through visionary presentations at technology conferences, embodying a level of technological mastery that is akin to legendary figures.";
+            break;
+          default:
+            text = "Loading...";
+    }
+    const descriptionElement = document.querySelector('.maturity-description');
+    descriptionElement.innerHTML = `<p>${text}</p>`;
+
+    // Function to create table rows
+    function createTableRow(area, yesDescs, noDescs, tableBody) {
+  const row = document.createElement("tr");
+  const areaCell = document.createElement("td");
+  areaCell.textContent = area;
+  row.appendChild(areaCell);
+
+  const yesCell = document.createElement("td");
+  const yesList = document.createElement("ul");
+  yesDescs.forEach(desc => {
+    const li = document.createElement("li");
+    const linkContainer = document.createElement("div");
+    linkContainer.classList.add("link-container");
+
+    const linkText = document.createElement("span");
+    linkText.classList.add("link-text");
+    linkText.textContent = desc;
+        
+    const redirectIcon = document.createElement("div");
+    redirectIcon.innerHTML = `
+  <span id="redirection" style="color:red;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round">
+    <g fill="none" fill-rule="evenodd">
+      <path d="M18 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h5M15 3h6v6M10 14L20.2 3.8"/>
+    </g>
+  </svg>
+  </span>
+`;
+    if (desc === "Identify energy leaks in applications using code scanning tools") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.14.112:9000/dashboard?id=opendaylight&codeScope=overall", "_blank");
+      });
+    }
+    if (desc === "Tagging of resources to track usage") {
+      linkContainer.addEventListener("click", () => {
+        window.open("https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#Instances:search=:jenkins;v=3;$case=tags:true%5C,client:false;$regex=tags:false%5C,client:false", "_blank");
+      });
+    }
+    if (desc === "Calculate energy utilization for provisioned resources and show recommendations to deployment teams") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.14.112:3001/ec2", "_blank");
+      });
+    }
+    if (desc === "Identify and share a report on unused resources") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.14.112:3001/unused_resources", "_blank");
+      });
+    }
+    if (desc === "Turn off workloads and node pools outside of business hours") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.14.112:3001/lambda", "_blank");
+      });
+    }
+    if (desc === "Deploy in regions that are powered by renewables or energy efficient resources") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.20.41:8080/job/OPA-regions/", "_blank");
+      });
+    }
+    if (desc === "Show energy efficient resource provisioning options during provisioning") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.20.41:8080/job/OPA-regions/", "_blank");
+      });
+    }
+    if (desc === "Energy metrics using Intel RAPL") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.14.112:3001/energy_usage", "_blank");
+      });
+    }
+    if (desc === "Energy consumption of ML job, Model training") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.14.112:3001/llm", "_blank");
+      });
+    }
+    if (desc === "Workload Benchmarking on different processors") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.14.112:3000/d/bdivq61erz0g0c1/sustainability-workload-benchmarking-intel-and-amd?orgId=1&refresh=5s&from=1718083372870&to=1718083672870", "_blank");
+      });
+    }
+
+    linkContainer.appendChild(linkText);
+    linkContainer.appendChild(redirectIcon);
+    li.appendChild(linkContainer);
+    li.classList.add("yes-desc");
+    yesList.appendChild(li);
+  });
+  yesCell.appendChild(yesList);
+  row.appendChild(yesCell);
+
+  const noCell = document.createElement("td");
+  const noList = document.createElement("ul");
+  noDescs.forEach(desc => {
+    const li = document.createElement("li");
+    li.textContent = desc;
+    li.classList.add("no-desc");
+    noList.appendChild(li);
+  });
+  noCell.appendChild(noList);
+  row.appendChild(noCell);
+
+  tableBody.appendChild(row);
+}
+
+    // Function to fetch data and display table
+    function fetchDataAndDisplayTable(levelsEndpoint, implementedYesEndpoint, implementedNoEndpoint) {
+        console.log(implementedNoEndpoint, implementedYesEndpoint, levelsEndpoint);
+        let areaMap = new Map();
+
+        function processData(data, isYes) {
+          data.forEach(item => {
+            if (!areaMap.has(item.area)) {
+              areaMap.set(item.area, { yes: [], no: [] });
+            }
+            let entry = areaMap.get(item.area);
+            if (isYes && item.implemented === 'yes') {
+              entry.yes.push(item.action_description);
+            } else if (!isYes && item.implemented === 'no') {
+              entry.no.push(item.action_description);
+            }
+          });
+        }
+
+        Promise.all([
+          fetch(implementedYesEndpoint).then(response => response.json()),
+          fetch(implementedNoEndpoint).then(response => response.json())
+        ])
+        .then(([yesData, noData]) => {
+        console.log('Fetched data:', yesData, noData);
+          processData(yesData, true);
+          processData(noData, false);
+
+          const tableBody = document.getElementById("implementedTableBody");
+          tableBody.innerHTML = "";  // Clear existing rows
+
+          for (let [area, descriptions] of areaMap) {
+            createTableRow(area, descriptions.yes, descriptions.no, tableBody);
+          }
+        })
+        .catch(error => {
+          console.error("Error fetching data:", error);
+        });
+      }
+
+    // Function to handle "Detailed Info" button click
+    document.getElementById("detailedInfoBtn").addEventListener("click", function() {
+    const table = document.getElementById("implementedTable");
+    if (table.style.display === "none") {
+        table.style.display = "table";
+        fetchDataAndDisplayTable(levelsEndpoint, implementedYesEndpoint, implementedNoEndpoint);
+        this.textContent = "Hide Detailed Info";
+    } else {
+        table.style.display = "none";
+        this.textContent = "Detailed Info";
+        document.getElementById("implementedTableBody").innerHTML = "";
+    }
+});
+}
+    }
+
+  </script>
+</body>
+</html>
