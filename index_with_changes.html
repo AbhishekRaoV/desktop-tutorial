@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GSSM</title>
+  <link rel="icon" href="https://www.svgrepo.com/show/923/leaf.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: "Montserrat", sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden; 
+      /* Hide horizontal scrollbar */
+      display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    /* height: 100vh; */
+    margin: 0;
+    }
+    .main-content {
+      height: 100vh; /* Initially occupies full viewport height */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: left;
+    }
+    .text-section {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      transform: translateY(-50%);
+      z-index: 5;
+      color: black;
+      max-width: 600px;
+      padding: 40px;
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      max-width: 500px;
+    }
+    body {
+  scroll-behavior: smooth;
+}
+
+    .cta-button, .get-report {
+      display: inline-block;
+      padding: 15px 35px;
+      background-color: #4caf50;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+      transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      transition: smooth;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .cta-button:hover, .get-report:hover {
+      background-color: #45a049;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+    .image-section {
+  position: absolute;
+  top: 0;
+  right: 0; /* Move the image to the right */
+  width: 85%; /* Adjust the width of the image section */
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+    .image-section img {
+      position: absolute;
+      top: 0;
+      right: 0;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: cover;
+    }
+    .image-section::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to left, 
+                rgba(255, 255, 255, 0) 0%, 
+                rgba(255, 255, 255, 0.3) 30%, 
+                rgba(255, 255, 255, 0.7) 60%, 
+                rgba(255, 255, 255, 0.9) 80%,
+                rgba(255, 255, 255, 1) 100%);
+      z-index: 2;
+    }
+    /* h1, h2 {
+      margin-top: 30px;
+      font-size: 28px;
+   
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    } */
+    button{
+      font-family: "Montserrat", sans-serif;
+      font-optical-sizing: auto;
+      /* font-weight: <weight>; */
+      font-style: normal;
+    }
+    table {
+      width: 80%;
+      max-width: 1100px;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 30px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: white;
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+      vertical-align: top;
+    }
+    th {
+      background-color: #f2f2f2;
+      /* background-image: linear-gradient(to right, #6a6b6a, #e5e7e4); */
+      color: rgb(0, 0, 0);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 14px;
+    }
+    td {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #444;
+    }
+    tr:hover td {
+      background-color: #f5f5f5;
+      transition: background-color 0.3s ease;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    td:first-child {
+      font-weight: 600;
+      color: #333;
+      border-right: 1px solid #e0e0e0;
+      background-color: #f9f9f9;
+      width: 20%;
+    }
+    tr:nth-child(even) {
+      background-color: #fbfbfb;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 8px;
+    }
+    li:before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      font-size: 1.2em;
+      line-height: 1;
+    }
+    #detailedInfoBtn {
+      margin-top: 25px;
+      padding: 14px 35px;
+      background-color: white;
+      color: #4caf50;
+      border: 2px solid #4caf50;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      font-size: 16px;
+      outline: none;
+      font-weight: bold;
+      border-radius: 5px;
+      transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 50px;
+    }
+    #detailedInfoBtn:hover {
+      background-image: linear-gradient(to right, #4caf50, #8bc34a);
+      border: none;
+      color: white;
+      box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+      transform: translateY(-2px);
+    }
+    #detailedInfoBtn:active {
+      transform: translateY(1px);
+      box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    }
+    .maturity-level {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin: 20px 0;
+      padding: 15px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-left: 5px solid #4caf50;
+    }
+    .table-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .yes-desc {
+      color: #4caf50;  /* Green color for "yes" descriptions */
+    }
+    .no-desc {
+      color: #f44336;  /* Red color for "no" descriptions */
+    }
+    .yes-desc:before {
+      color: #4caf50;  /* Green bullet for "yes" descriptions */
+    }
+    .no-desc:before {
+      color: #f44336;  /* Red bullet for "no" descriptions */
+    }
+    .progress-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      width: 80%;
+      margin-top: 10%;
+      max-width: 800px;
+      margin-bottom: 20px;
+    }
+    .progress-bar {
+      width: 18%;
+      height: 15px;
+      background-color: #e0e0e0;
+      border-radius: 10px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 10px; /* Adjust as needed */
+    }
+    .progress-bar::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #333;
+    }
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, #4caf50, #8bc34a);
+      /* background: linear-gradient(to right, #f44336, #f44336); Red color */
+      transform: translateX(-100%);
+      transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    .progress-bar.fill-1::after { transition-delay: 0.0s; }
+    .progress-bar.fill-2::after { transition-delay: 0.8s; }
+    .progress-bar.fill-3::after { transition-delay: 1.6s; }
+    .progress-bar.fill-4::after { transition-delay: 2.4s; }
+    .progress-bar.fill-5::after { transition-delay: 3.2s; }
+    .progress-bar.filled::after {
+      transform: translateX(0);
+    }
+
+    .progress-bar.current::after {
+      box-shadow: 0 0 10px 3px rgba(76, 175, 80, 0.5);
+    }
+    .progress-bar:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      right: -15px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 10px;
+      height: 10px;
+      background-color: #e0e0e0;
+      border-radius: 50%;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 10px 3px rgba(76, 175, 80, 0.5); }
+      50% { box-shadow: 0 0 20px 5px rgba(76, 175, 80, 0.7); }
+    }
+    html,
+body {
+  scroll-behavior: smooth;
+}
+
+.container {
+  overflow-y: auto;
+  height: 100vh;
+}
+
+.main-content {
+  padding-bottom: 200px; /* Adjust to accommodate space for the progress bars */
+}
+.maturity-description {
+  font-size: 5rem;
+  opacity: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0 20px;
+  margin: 0 auto; /* Center the element horizontally */
+  text-align: center;
+  transition: opacity 0.3s ease;
+  display: flex; /* Enable flexbox layout */
+  justify-content: stretch; /* Center the content horizontally */
+  flex-direction: column; /* Stack child elements vertically */
+  align-items: center; /* Center child elements horizontally */
+}
+
+.maturity-description p {
+  margin: 0; /* Remove default margin for <p> tags */
+}
+.maturity-description-container {
+  width: 100%;
+  display: flex;
+  justify-content: stretch;
+}
+.link-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding-bottom: 5px;
+}
+
+.link-text {
+  position: relative;
+  z-index: 1;
+  flex-grow: 1;
+}
+
+.link-container::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background-color: #4caf50;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease-out;
+}
+
+.link-container:hover::before {
+  transform: scaleX(1);
+}
+
+#redirection {
+  width: 16px;
+  height: 16px;
+  margin-left: 5px;
+  opacity: 0; /* Initially hide the icon */
+  transition: opacity 0.3s ease-in-out 0.28s; /* Add a smooth transition */
+}
+
+.link-container:hover #redirection {
+  opacity: 1; /* Show the redirect icon when hovering over the link container */
+}
+#select-cloud, #select-project {
+  font-family: 'Montserrat', sans-serif;
+  padding: 6px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #333;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  animation: fadeInUp 1s ease;
+  margin: 10px;
+  padding-right: 90px;
+}
+
+#select-cloud {
+  padding-right: 222px;
+  /* font-weight: bold; */
+}
+
+#select-cloud-label {
+  font-weight: bold;
+  margin-right: 10px;
+  padding-right: 9px;
+}
+#select-project-label{
+  font-weight: bold;
+  /* margin-right: 10px; */
+  /* padding-right: 9px; */
+}
+
+#select-cloud, #select-project:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* padding: 30px 100px; */
+  padding-top: 30px;
+  padding-bottom: 30px;
+  width: 100%;
+  font-weight: bold;
+}
+
+/* .select-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%;
+} */
+
+
+
+.report-button {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.select-card {
+  margin-top: 100px;
+  background-color: #fff;
+  border-radius: 11px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  padding: 30px 150px;
+  animation: fadeInUp 1s ease;
+  position: relative;
+  overflow: hidden;
+}
+.progress-maturity-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 3%;
+  margin-bottom: 20px;
+}
+.radio{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 6% 0%;
+}
+#wo_sus{
+  margin-right: 30px;
+}
+#implementedTableBody{
+  font-weight: bold;
+}
+/* Rest of your CSS styles */
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="main-content">
+      <section class="text-section">
+        <h1>Green Software Maturity Matrix</h1>
+        <p>Assess and improve software's environmental impact with comprehensive matrix.</p>
+        <a href="#select-card" class="cta-button">Take Action</a>
+      </section>
+      <section class="image-section">
+        <img src="https://si-interactive.s3.amazonaws.com/prod/plansponsor-com/wp-content/uploads/2021/01/19163836/PS-011921-Union-Pension-Funding-Progress-Under-Dem-Leadership-1273822951-web.jpg" alt="Progress Chart">
+      </section>
+    </div>
+  </div>
+    <div class="select-card" id="select-card" style="display: none;">
+        <div class="selection-top">
+            <div class="selection">
+                <div class="select-group">
+                  <label id="select-project-label">Select Project</label>
+                  <select id="select-project">
+                      <option value="">Platform Engineering</option>
+                      <!-- <option value="project2">PE - GSSM</option> -->
+                      <!-- <option value="project3">Project 3</option> -->
+                  </select>
+                </div>
+                <div class="select-group">
+                  <label id="select-cloud-label">Select Cloud</label>
+                  <select id="select-cloud">
+                      <option value="aws">AWS</option>
+                      <!-- <option value="azure">Azure</option>
+                      <option value="gcp">GCP</option> -->
+                  </select>
+                </div>
+                <div class="radio">
+                  <input type="radio" id="html" name="fav_language" value="project1" checked>
+                    <label for="html" id="wo_sus">Before GreenTech</label><br>
+                    <input type="radio" id="css" name="fav_language" value="project2">
+                    <label for="css">After GreenTech</label><br>
+                </div>
+                
+            </div>
+        </div>
+        <div class="report-button" >
+            <a href="#page2" class="get-report">Get Report</a>
+        </div>
+    </div>
+    <div class="progress-maturity-container">
+        <div id="page2" class="progress-container" style="display: none;" >
+            <div class="progress-bar" data-label="Level 1"></div>
+            <div class="progress-bar" data-label="Level 2"></div>
+            <div class="progress-bar" data-label="Level 3"></div>
+            <div class="progress-bar" data-label="Level 4"></div>
+            <div class="progress-bar" data-label="Level 5"></div>
+        </div>
+        <div id="mat-level" class="maturity-level" style="display: none;">Current Maturity Level: Loading...</div>
+        <div class="maturity-description-container">
+            <div class="maturity-description"></div>
+        </div>
+    </div>
+        <button id="detailedInfoBtn" style="display: none;">Detailed Info</button>
+
+        <div class="table-container">
+            <table id="implementedTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Implemented Areas</th>
+                        <th>Areas to be Focused</th>
+                    </tr>
+                </thead>
+                    <tbody id="implementedTableBody"></tbody>
+            </table>
+        </div>
+    <!-- </div> -->
+
+  <script>
+    window.onload = function() {
+        let reportClicked = false;
+        let baseUrl = "http://10.63.14.112:3001/";
+        let levelsEndpoint = baseUrl;
+        let implementedYesEndpoint = "http://10.63.14.112:3001/implemented_yes";
+        let implementedNoEndpoint = "http://10.63.14.112:3001/implemented_no";
+        // Function to handle "Get Report" button click
+        
+    document.querySelector('.get-report').addEventListener('click', function() {
+        reportClicked = true;
+        // clearElements();
+        
+        const selectedProject = document.querySelector('input[name="fav_language"]:checked').value;
+        // console.log(implementedNoEndpoint, implementedYesEndpoint, levelsEndpoint);
+        
+        if (selectedProject === "project2") {
+            levelsEndpoint = "http://10.63.14.112:3001/";
+            implementedYesEndpoint = "http://10.63.14.112:3001/implemented_yes";
+            implementedNoEndpoint = "http://10.63.14.112:3001/implemented_no";
+            console.log(implementedNoEndpoint, implementedYesEndpoint, levelsEndpoint);
+        }
+        if (selectedProject === "project1") {
+            levelsEndpoint = "http://10.63.14.112:3001/levels2";
+            implementedYesEndpoint = "http://10.63.14.112:3001/implemented_yes2";
+            implementedNoEndpoint = "http://10.63.14.112:3001/implemented_no2";
+            console.log(implementedNoEndpoint, implementedYesEndpoint, levelsEndpoint);
+        }
+       
+        fetchDataAndDisplayDescription(levelsEndpoint, implementedYesEndpoint, implementedNoEndpoint); 
+        
+        document.getElementById('detailedInfoBtn').style.display = 'flex';
+        document.getElementById('mat-level').style.display = 'flex';
+        document.getElementById('page2').style.display = 'flex';
+
+    });
+    function clearElements(){
+        document.getElementById('detailedInfoBtn').style.display = 'none';
+        document.getElementById('mat-level').style.display = 'none';
+        document.getElementById('page2').style.display = 'none';
+    }
+    document.querySelector('.cta-button').addEventListener('click', function() {
+        reportClicked = true;
+        document.getElementById('select-card').style.display = 'block';
+    });
+    //     function updateProjectOptions(cloud) {
+    //     const projectDropdown = document.getElementById('select-project');
+    //     // Clear existing options
+    //     projectDropdown.innerHTML = '';
+    //     // Add options based on selected cloud
+    //     if (cloud === 'aws') {
+    //         projectDropdown.innerHTML += '<option value="project1">Project 1</option>';
+    //         projectDropdown.innerHTML += '<option value="project2">Project 2</option>';
+    //     } else {
+    //         // If not AWS, show no projects
+    //         projectDropdown.innerHTML += '<option value="" disabled selected>No projects</option>';
+    //     }
+    // }
+
+    // Add event listener to select cloud dropdown
+    document.getElementById('select-cloud').addEventListener('change', function() {
+        const selectedCloud = this.value;
+        // Update project options based on selected cloud
+        updateProjectOptions(selectedCloud);
+    });
+    // window.location.href = 'http://10.63.14.112:3001/index';
+    // Flag to track if "Get Report" button is clicked
+
+    // Function to fill progress bars
+    function fillProgressBars(progressLevel) {
+        const progressBars = document.querySelectorAll('.progress-bar');
+        progressBars.forEach((bar, index) => {
+            const level = index + 1;
+            if (level <= progressLevel) {
+                bar.classList.add(`fill-${level}`, 'filled');
+            } else {
+                bar.classList.remove(`fill-${level}`, 'filled');
+            }
+            // Add pulsating effect to the current level
+            setTimeout(function() {
+                if (level <= progressLevel) {
+                    bar.classList.add('current');
+                    bar.style.animation = 'pulse 2s infinite';
+                } else {
+                    bar.classList.remove('current');
+                    bar.style.animation = 'none';
+                }
+            }, progressLevel * 800);
+        });
+    }
+    
+    function clearTable() {
+    const table = document.getElementById("implementedTable");
+    table.style.display = "none";
+    document.getElementById("detailedInfoBtn").textContent = "Detailed Info";
+    // document.getElementById("implementedTableBody").innerHTML = "";
+}
+    // Function to fetch data and display maturity level description
+    function fetchDataAndDisplayDescription(levelsEndpoint, implementedYesEndpoint, implementedNoEndpoint) {
+      clearTable();
+        fetch(levelsEndpoint)
+            .then(response => response.text())
+            .then(progressLevel => {
+                // Parse the progress level as an integer
+                progressLevel = parseInt(progressLevel);
+                console.log(progressLevel);
+
+                // Update progress bars only if "Get Report" button is clicked
+                if (reportClicked) {
+                    fillProgressBars(progressLevel);
+                }
+
+                // Update the text displaying the current progress level
+                setTimeout(function() {
+                    document.querySelector('.maturity-level').innerText = `Current Maturity Level: ${progressLevel}`;
+                    const maturityDescription = document.querySelector('.maturity-description');
+                    updateMaturityLevelText(progressLevel); // Update maturity description
+                    maturityDescription.style.opacity = '1';
+                }, progressLevel * 880);
+
+            })
+            .catch(error => {
+                console.error('Error fetching progress level:', error);
+            });
+    }
+
+    
+
+    // Function to update maturity level text based on progress level
+    function updateMaturityLevelText(level) {
+        let text = "";
+        switch (level) {
+          case 1:
+            text = "At this stage, there is a lack of strategic organization regarding sustainability efforts. Limited individuals may show interest or possess knowledge, but overall, the approach is reactive rather than proactive. This represents the initial phase for most entities in their journey towards environmental consciousness.";
+            break;
+          case 2:
+            text = "Progress is noticeable, albeit inconsistent. Sustainability efforts are somewhat managed, though largely in a reactive manner. The extent of advancement varies across projects and teams. Data collection is minimal and often lacks comprehensive coverage.";
+            break;
+          case 3:
+            text = "Here, a commendable level of proficiency is achieved. There exists a fundamental understanding of green technologies and implemented for the Development and Deployment stages.";
+            break;
+          case 4:
+            text = "This level marks an impressive achievement. Progress is measured dynamically, supported by real-time data analytics. The organization demonstrates an ability to adapt and refine strategies promptly based on the insights derived from these analytics.";
+            break;
+          case 5:
+            text = "Reaching the pinnacle, organizations at this level operate at an unparalleled standard of excellence. They continuously monitor and enhance their sustainability practices based on real-time data analysis. Such entities serve as industry leaders, inspiring others through visionary presentations at technology conferences, embodying a level of technological mastery that is akin to legendary figures.";
+            break;
+          default:
+            text = "Loading...";
+    }
+    const descriptionElement = document.querySelector('.maturity-description');
+    descriptionElement.innerHTML = `<p>${text}</p>`;
+
+    // Function to create table rows
+    function createTableRow(area, yesDescs, noDescs, tableBody) {
+  const row = document.createElement("tr");
+  const areaCell = document.createElement("td");
+  areaCell.textContent = area;
+  row.appendChild(areaCell);
+
+  const yesCell = document.createElement("td");
+  const yesList = document.createElement("ul");
+  yesDescs.forEach(desc => {
+    const li = document.createElement("li");
+    const linkContainer = document.createElement("div");
+    linkContainer.classList.add("link-container");
+
+    const linkText = document.createElement("span");
+    linkText.classList.add("link-text");
+    linkText.textContent = desc;
+        
+    const redirectIcon = document.createElement("div");
+    redirectIcon.innerHTML = `
+  <span id="redirection" style="color:red;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round">
+    <g fill="none" fill-rule="evenodd">
+      <path d="M18 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h5M15 3h6v6M10 14L20.2 3.8"/>
+    </g>
+  </svg>
+  </span>
+`;
+    if (desc === "Identify energy leaks in applications using code scanning tools") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.14.112:9000/dashboard?id=opendaylight&codeScope=overall", "_blank");
+      });
+    }
+    if (desc === "Tagging of resources to track usage") {
+      linkContainer.addEventListener("click", () => {
+        window.open("https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#Instances:search=:jenkins;v=3;$case=tags:true%5C,client:false;$regex=tags:false%5C,client:false", "_blank");
+      });
+    }
+    if (desc === "Calculate energy utilization for provisioned resources and show recommendations to deployment teams") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.14.112:3001/ec2", "_blank");
+      });
+    }
+    if (desc === "Identify and share a report on unused resources") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.14.112:3001/unused_resources", "_blank");
+      });
+    }
+    if (desc === "Turn off workloads and node pools outside of business hours") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.14.112:3001/lambda", "_blank");
+      });
+    }
+    if (desc === "Deploy in regions that are powered by renewables or energy efficient resources") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.20.41:8080/job/OPA-regions/", "_blank");
+      });
+    }
+    if (desc === "Show energy efficient resource provisioning options during provisioning") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.20.41:8080/job/OPA-regions/", "_blank");
+      });
+    }
+    if (desc === "Energy metrics using Intel RAPL") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.14.112:3001/energy_usage", "_blank");
+      });
+    }
+    if (desc === "Energy consumption of ML job, Model training") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.14.112:3001/llm", "_blank");
+      });
+    }
+    if (desc === "Workload Benchmarking on different processors") {
+      linkContainer.addEventListener("click", () => {
+        window.open("http://10.63.14.112:3000/d/bdivq61erz0g0c1/sustainability-workload-benchmarking-intel-and-amd?orgId=1&refresh=5s&from=1718083372870&to=1718083672870", "_blank");
+      });
+    }
+
+    linkContainer.appendChild(linkText);
+    linkContainer.appendChild(redirectIcon);
+    li.appendChild(linkContainer);
+    li.classList.add("yes-desc");
+    yesList.appendChild(li);
+  });
+  yesCell.appendChild(yesList);
+  row.appendChild(yesCell);
+
+  const noCell = document.createElement("td");
+  const noList = document.createElement("ul");
+  noDescs.forEach(desc => {
+    const li = document.createElement("li");
+    li.textContent = desc;
+    li.classList.add("no-desc");
+    noList.appendChild(li);
+  });
+  noCell.appendChild(noList);
+  row.appendChild(noCell);
+
+  tableBody.appendChild(row);
+}
+
+    // Function to fetch data and display table
+    function fetchDataAndDisplayTable(levelsEndpoint, implementedYesEndpoint, implementedNoEndpoint) {
+        console.log(implementedNoEndpoint, implementedYesEndpoint, levelsEndpoint);
+        let areaMap = new Map();
+
+        function processData(data, isYes) {
+          data.forEach(item => {
+            if (!areaMap.has(item.area)) {
+              areaMap.set(item.area, { yes: [], no: [] });
+            }
+            let entry = areaMap.get(item.area);
+            if (isYes && item.implemented === 'yes') {
+              entry.yes.push(item.action_description);
+            } else if (!isYes && item.implemented === 'no') {
+              entry.no.push(item.action_description);
+            }
+          });
+        }
+
+        Promise.all([
+          fetch(implementedYesEndpoint).then(response => response.json()),
+          fetch(implementedNoEndpoint).then(response => response.json())
+        ])
+        .then(([yesData, noData]) => {
+        console.log('Fetched data:', yesData, noData);
+          processData(yesData, true);
+          processData(noData, false);
+
+          const tableBody = document.getElementById("implementedTableBody");
+          tableBody.innerHTML = "";  // Clear existing rows
+
+          for (let [area, descriptions] of areaMap) {
+            createTableRow(area, descriptions.yes, descriptions.no, tableBody);
+          }
+        })
+        .catch(error => {
+          console.error("Error fetching data:", error);
+        });
+      }
+
+    // Function to handle "Detailed Info" button click
+    document.getElementById("detailedInfoBtn").addEventListener("click", function() {
+    const table = document.getElementById("implementedTable");
+    if (table.style.display === "none") {
+        table.style.display = "table";
+        fetchDataAndDisplayTable(levelsEndpoint, implementedYesEndpoint, implementedNoEndpoint);
+        this.textContent = "Hide Detailed Info";
+    } else {
+        table.style.display = "none";
+        this.textContent = "Detailed Info";
+        document.getElementById("implementedTableBody").innerHTML = "";
+    }
+});
+}
+    }
+
+  </script>
+</body>
+</html>
