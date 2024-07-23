@@ -38,6 +38,7 @@
 
         *{
             font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
         }
 
         .project-and-cloud-details {
@@ -1076,7 +1077,7 @@ body {
 }
 
 .select-card {
-  margin-top: 100px;
+  margin: 60px auto;
   background-color: #fff;
   border-radius: 11px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -1168,7 +1169,7 @@ body {
         </form>
       </div>
     </div>
-    <a href="#project-cloud-form" class="previous-reports">Previous Reports</a>
+    <a href="#project-cloud-form" class="previous-reports" id="previous-reports">Previous Reports</a>
   </div>
 
 <div class="dashboard" id="dashboard" style="display: none;">
@@ -1221,7 +1222,7 @@ body {
           </div>
       </div>
       <div class="report-button" >
-          <a href="#page2" class="get-report">Get Report</a>
+          <a href="#page2" class="get-report" id="get-report">Get Report</a>
       </div>
   </div>
   <div class="progress-maturity-container">
@@ -1328,19 +1329,19 @@ const formFields = {
         <h3>ML Job Energy Consumption</h3>
         <div class="form-group">
             <label for="mlJobConsumptionurl">Code URL</label>
-            <input type="text" id="mlJobConsumptionurl" name="mlJobConsumptionurl" placeholder="Enter code URL">
+            <input type="text" id="mlJobConsumptionurl" name="mlJobConsumptionurl" placeholder="Enter code URL" required>
             </div>
             <div class="form-group">
             <label for="mlJobConsumptionPackage">Package</label>
-            <input type="text" id="mlJobConsumptionPackage" name="mlJobConsumptionPackage" placeholder="Enter package name">
+            <input type="text" id="mlJobConsumptionPackage" name="mlJobConsumptionPackage" placeholder="Enter package name" required>
             </div>
             <div class="form-group">
             <label for="mlJobConsumptionClass">Class</label>
-            <input type="text" id="mlJobConsumptionClass" name="mlJobConsumptionClass" placeholder="Enter class name">
+            <input type="text" id="mlJobConsumptionClass" name="mlJobConsumptionClass" placeholder="Enter class name" required>
             </div>
             <div class="form-group">
             <label for="mlJobConsumptionFunction">Function</label>
-            <input type="text" id="mlJobConsumptionFunction" name="mlJobConsumptionFunction" placeholder="Enter function name">
+            <input type="text" id="mlJobConsumptionFunction" name="mlJobConsumptionFunction" placeholder="Enter function name" required>
         </div>
     `,
     energyMetrics: `
@@ -1675,6 +1676,50 @@ document.getElementById('projectForm').addEventListener('submit', function(e) {
     console.log('Form submitted!', formData);
     alert('Form submitted successfully!');
     triggerJenkinsBuild(formData);
+    // document.querySelector('.submitBtn').addEventListener('click', function() {
+        // reportClicked = true;
+        document.getElementById('select-card').style.display = 'block';
+        document.getElementById("select-card").scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    window.scrollTo({
+                    top: document.getElementById("select-card").offsetTop,
+                    behavior: 'smooth'
+                  });
+    // });
+});
+
+document.querySelector('.previous-reports').addEventListener('click', function() {
+    const selectCard = document.getElementById('select-card');
+    
+    // Make the element visible
+    selectCard.style.display = 'block';
+    
+    // Force a reflow to ensure the element is rendered
+    void selectCard.offsetWidth;
+    
+    // Calculate the element's position
+    const rect = selectCard.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Calculate the target scroll position
+    const targetScrollPosition = rect.top + scrollTop - (window.innerHeight - rect.height) / 2;
+    
+    // Scroll to the calculated position
+    window.scrollTo({
+        top: targetScrollPosition,
+        behavior: 'smooth'
+    });
+    
+    // Ensure the element stays centered after any animations complete
+    setTimeout(() => {
+        const updatedRect = selectCard.getBoundingClientRect();
+        const updatedScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const updatedTargetScrollPosition = updatedRect.top + updatedScrollTop - (window.innerHeight - updatedRect.height) / 2;
+        
+        window.scrollTo({
+            top: updatedTargetScrollPosition,
+            behavior: 'smooth'
+        });
+    }, 10); // Adjust this timeout to match your fadeInUp animation duration
 });
 
 function triggerJenkinsBuild(formData) {
@@ -1729,15 +1774,15 @@ function triggerJenkinsBuild(formData) {
         document.getElementById('project-and-cloud-details').style.display = 'block';
         document.getElementById('project-and-reports').style.display = 'flex';
     });
-    document.querySelector('.submitBtn').addEventListener('click', function() {
-        reportClicked = true;
-        document.getElementById('select-card').style.display = 'block';
-        document.getElementById("select-card").scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    window.scrollTo({
-                    top: document.getElementById("select-card").offsetTop,
-                    behavior: 'smooth'
-                  });
-    });
+    // document.querySelector('.submitBtn').addEventListener('click', function() {
+    //     reportClicked = true;
+    //     document.getElementById('select-card').style.display = 'block';
+    //     document.getElementById("select-card").scrollIntoView({ behavior: 'smooth', block: 'start' });
+    //                 window.scrollTo({
+    //                 top: document.getElementById("select-card").offsetTop,
+    //                 behavior: 'smooth'
+    //               });
+    // });
     //     function updateProjectOptions(cloud) {
     //     const projectDropdown = document.getElementById('select-project');
     //     // Clear existing options
