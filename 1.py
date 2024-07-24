@@ -37,18 +37,7 @@ spec:
             image: tedezed/ubuntu-container-disk:22.0
         - name: cloudinitdisk
           cloudInitNoCloud:
-            userData: |
-              # cloud-config
-              users:
-                - default
-                - name: ubuntu
-                  passwd: "paswrd"
-                  shell: /bin/bash
-                  lock-passwd: false
-                  ssh_pwauth: True
-                  chpasswd: { expire: False }
-                  sudo: ALL=(ALL) NOPASSWD:ALL
-                  groups: users, admin
+            userDataBase64: IyEvYmluL2Jhc2gKdXNlcnM6CiAtIG5hbWU6IHVidW50dQogICAgcGFzc3dkOiAiZm9vIgogICAgc2hlbGw6IC9iaW4vYmFzaAogICAgbG9ja3Bhc3N3ZDogZmFsc2UKICAgIHNzaF9wd2F1dGg6IFRydWUKICAgIGNoYXBzd2Q6IHsgZXhwaXJlOiBGYWxzZSB9CiAgICBzdWRvOiBBTEx9KEFMTCkgTk9QQVNTV0Q6QUxMClxuICAgIGdyb3VwczogdXNlcnMsIGFkbWluXG0K
 ---
 apiVersion: v1
 kind: Service
