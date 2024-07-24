@@ -1,0 +1,39 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  creationTimestamp: null
+  name: ubuntu
+spec:
+  runStrategy: Always
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: containerdisk
+          - disk:
+              bus: virtio
+            name: cloudinit
+          rng: {}
+        resources:
+          requests:
+            memory: 1Gi
+      terminationGracePeriodSeconds: 180
+      volumes:
+      - containerDisk:
+          image: quay.io/containerdisks/ubuntu:24.04
+        name: containerdisk
+      - cloudInitNoCloud:
+          userData: |-
+            #cloud-config
+            users:
+              - name: ubuntu
+                sudo: ALL=(ALL) NOPASSWD:ALL
+                lock_passwd: false
+                passwd: "password-hash-goes-here"  # Replace with your encrypted password
+        name: cloudinit
+status: {}
