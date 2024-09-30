@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Energy Usage Dashboard</title>
+    <link rel="icon" href="https://www.svgrepo.com/show/923/leaf.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <style>
+        .highcharts-figure #container {
+            min-width: 560px;
+            max-width: 800px;
+            margin: 0;
+            border-radius: 8px;
+            height: 465px;
+            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .highcharts-figure {
+            margin: 0;
+            padding: 0;
+            border-radius: 8px;
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+        }
+
+        .highcharts-figure:hover {
+            transform: scale(1.05) translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+
+        .heading h2 {
+            margin-bottom: 50px;
+        }
+
+        * {
+            font-family: "Montserrat", sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .dashboard {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+        .tiles {
+            display: grid;
+            grid-template-columns: repeat(2, 300px);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .tile {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+        }
+
+        .tile:hover {
+            transform: scale(1.05) translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .tile h2 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .tile p {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #0066cc;
+        }
+
+        .negative {
+            font-size: 14px;
+            color: red;
+        }
+
+        .positive {
+            font-size: 14px;
+            color: green;
+        }
+
+        .chart-container {
+            grid-column: 1 / -1;
+            height: 300px;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .rating-letter {
+            margin-right: 10px;
+        }
+
+        .rating-stars {
+            font-size: 18px;
+        }
+
+        .table-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        table {
+            width: 80%;
+            max-width: 1100px;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: white;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: rgb(0, 0, 0);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 14px;
+        }
+
+        td {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        tr:hover td {
+            background-color: #f5f5f5;
+            transition: background-color 0.3s ease;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td:first-child {
+            font-weight: 600;
+            color: #333;
+            border-right: 1px solid #e0e0e0;
+            background-color: #f9f9f9;
+            width: 20%;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fbfbfb;
+        }
+
+        .tableheading {
+            padding-top: 30px;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        * {
+            animation: fadeInUp 1s ease;
+        }
+
+        /* loading screen  */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #loading-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* Center the container vertically */
+            align-items: center;
+            /* Center horizontally */
+            height: 100%;
+            background-color: #ffffff;
+            z-index: 9999;
+            font-family: "Montserrat", sans-serif;
+            color: #333;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .loading-content {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #loading-screen p {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+            font-family: "Montserrat", sans-serif;
+            font-weight: bold;
+        }
+
+        #main-content {
+            display: none;
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* ball bouncing */
+        .container {
+            height: 15vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        .ball-wrapper {
+            position: relative;
+            display: flex;
+            /* align-items: center; */
+            justify-content: center;
+        }
+
+        .ball {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 7% 10%, #8bc34a, #4caf50);
+            position: absolute;
+            animation: bounce 0.5s infinite alternate;
+        }
+
+        .shadow {
+            width: 50px;
+            height: 10px;
+            background: radial-gradient(ellipse,
+                    rgba(0, 0, 0, 0.7) 0%,
+                    rgba(0, 0, 0, 0) 70%);
+            border-radius: 50%;
+            position: absolute;
+            bottom: -60px;
+            animation: shadow 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-100px);
+            }
+        }
+
+        @keyframes shadow {
+            0% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: scale(0.5);
+                opacity: 0.3;
+            }
+        }
+
+        .loading {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* Center vertically */
+            align-items: center;
+            /* Center horizontally */
+            height: 100%;
+        }
+
+
+        /* popup view */
+        /* .dashboard-container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+            gap: 20px;
+        } */
+        /* .dashboard-tile {
+            width: 300px;
+            height: 200px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        } */
+        .tile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* padding: 10px; */
+            /* background-color: #f0f0f0; */
+            /* border-bottom: 1px solid #e0e0e0; */
+        }
+
+        .tile-title {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+            padding-left: 20px;
+            padding-top: 20px;
+            color: #333;
+        }
+
+        .info-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+            border-radius: 50%;
+        }
+
+        .info-button:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .info-button svg {
+            width: 20px;
+            height: 20px;
+            fill: #555;
+        }
+
+        .tile-content {
+            padding: 15px;
+            height: calc(100% - 60px);
+            overflow: auto;
+        }
+
+        .backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 998;
+        }
+
+        .popup {
+            position: fixed;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            display: none;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .popup.active {
+            opacity: 1;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 54px;
+            cursor: pointer;
+            color: #555;
+        }
+
+        .tile-table {
+            width: 100%;
+            border-collapse: collapse;
+            /* padding-left: 500px; */
+
+        }
+
+        .tile-table th,
+        .tile-table td {
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            text-align: left;
+            
+        }
+
+        .tile-table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .table-area {
+            width: 55%;
+        }
+        .savings{
+            /* background-color: green; */
+            color: green;
+            font-weight: bold;
+        }
+        td.bucketname{
+            width:55%;
+        }
+        .tableheadings3{
+            padding-top: 100px;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 70px;
+            background-color: white;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar:hover {
+            width: 240px;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-item:hover {
+            background-color: #34495e;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-item i {
+            width: 30px;
+            font-size: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-item span {
+            margin-left: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar:hover .sidebar-item span {
+            opacity: 1;
+        }
+
+        .sidebar-item:hover i {
+            transform: scale(1.1);
+        }
+
+        /* Adjust main content to account for sidebar */
+        #main-content {
+            margin-left: 70px;
+            transition: margin-left 0.3s ease;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+
+        /* body:hover #main-content {
+            margin-left: 240px;
+        } */
+
+       
+    </style>
+</head>
+
+<body>
+    <!-- New sidebar -->
+    <div class="sidebar">
+        <a href="#" class="sidebar-item" onclick="scrollToTop()">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#high-energy-instances" class="sidebar-item">
+            <i class="fas fa-bolt"></i>
+            <span>High Energy Instances</span>
+        </a>
+        <a href="#s3-buckets" class="sidebar-item">
+            <i class="fas fa-database"></i>
+            <span>S3 Buckets</span>
+        </a>
+    </div>
+    <div id="loading-screen" class="loading">
+        <div class="container">
+            <div class="ball-wrapper">
+                <div class="ball"></div>
+                <div class="shadow"></div>
+            </div>
+        </div>
+        <div class="loading-content">
+            <div id="loading-spinner"></div>
+            <p>Loading data, please wait...</p>
+        </div>
+    </div>
+    <div id="main-content" style="display: none">
+        <div class="heading">
+            <h2>Total Energy and Carbon Emissions (Previous Week)</h2>
+        </div>
+        <div class="dashboard dashboard-container">
+            <div class="tiles">
+                <div class="tile">
+                    <h2>Total Energy Used</h2>
+                    <p id="total_energy">Loading...</p>
+                    <span class="change negative" id="energy_change_percentage1">Loading...</span>
+                </div>
+                <div class="tile">
+                    <h2>Weekly Energy Change</h2>
+                    <p id="energy_change_from_last_week">Loading...</p>
+                    <span class="change negative" id="energy_change_percentage2">Loading...</span>
+                </div>
+                <div class="tile">
+                    <h2>Average Energy Consumed</h2>
+                    <p id="average_energy">Loading...</p>
+                    <span class="change negative" id="average_energy_change">Loading...</span>
+                </div>
+                <div class="tile">
+                    <h2>Number of Instances</h2>
+                    <p id="number_of_instances">Loading...</p>
+                    <span class="change negative" id="instances_change">No Change</span>
+                </div>
+
+                <div class="tile">
+                    <h2>Carbon Emissions</h2>
+                    <p id="co2-value">Loading...</p>
+                    <span id="change" class="change negative">Loading...</span>
+                </div>
+                <div class="tile">
+                    <h2>Carbon FootPrint</h2>
+                    <p id="co2_change_percentage">Loading...</p>
+                    <span class="change negative" id="footprint_change">Loading</span>
+                </div>
+                <div class="tile">
+                    <h2>Cost (Before)</h2>
+                    <p id="co2_change_percentage">$ 187.8</p>
+                    <!-- <span class="change negative" id="footprint_change">Loading</span> -->
+                </div>
+                <div class="tile dashboard-tile" id="expandable-tile">
+                    <div class="tile-header">
+                        <h2>Cost (After)</h2>
+                        <button class="info-button" onclick="togglePopup(this.closest('.dashboard-tile'))"
+                            aria-label="More information">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p id="co2_change_percentage">$ 84.7</p>
+                    <span class="change positive" id="footprint_change">$ 103.1 savings</span>
+                </div>
+            </div>
+            <div class="backdrop" id="backdrop"></div>
+            <div class="popup" id="popup">
+                <button class="close-button" onclick="togglePopup()" aria-label="Close popup">×</button>
+                <div class="tile-header">
+                    <h3 class="tile-title">Details</h3>
+                </div>
+                <div class="tile-content">
+                    <table class="tile-table" id="data-table">
+                        <thead>
+                            <tr>
+                                <th class="table-area">Sustainable Areas</th>
+                                <th>Cost (Before)</th>
+                                <th>Cost (After)</th>
+                                <th>Savings</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-area">Workload benchmarking for cost, performance and energy
+                                    optimization</td>
+                                <td>$90.97</td>
+                                <td>$81.56</td>
+                                <td class="savings">-10.34%</td>
+                            </tr>
+                            <tr>
+                                <td class="table-area">Recommendations for resizing overprovisioned instances</td>
+                                <td>$751.20</td>
+                                <td>$338.80</td>
+                                <td class="savings">-54.89%</td>
+                            </tr>
+                            <tr>
+                                <td class="table-area">Turn off Idle resources outside business hours</td>
+                                <td>$2706.32</td>
+                                <td>$751.2</td>
+                                <td class="savings">-72.24%</td>
+                            </tr>
+                            <tr>
+                                <td class="table-area">Recommendations for resizing overprovisioned instances</td>
+                                <td>$199.68</td>
+                                <td>$118.144</td>
+                                <td class="savings">-40.83%</td>
+                            </tr>
+                            <!-- Add more rows as needed -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="chart">
+                <figure class="highcharts-figure">
+                    <div id="container"></div>
+                </figure>
+            </div>
+        </div>
+        <h2 class="tableheading">High Energy Utilisation Instances</h2>
+        <div class="table-container">
+            <table id="unusedInstancesTable">
+                <thead>
+                    <tr>
+                        <th>Instance Name</th>
+                        <th>Instance Id</th>
+                        <th>Instance State</th>
+                        <th>Instance Type</th>
+                        <th>CPU Utilization (%)</th>
+                        <th>Uptime (Hours)</th>
+                        <th>Energy Used (KWh)</th>
+                    </tr>
+                </thead>
+                <tbody id="unusedInstancesTableBody"></tbody>
+            </table>
+        </div><h2 class="tableheadings3">S3 Buckets Deletion & Archival Policies</h2>
+        <div class="table-container">
+          <table id="s3table">
+            <thead>
+              <tr>
+                <th class="buketname">Bucket Name</th>
+                <th>Deletion Policy</th>
+                <th>Archival Policy</th>
+                <th>Owner</th>
+              </tr>
+            </thead>
+            <tbody id="s3tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+      const loadingScreen = document.getElementById("loading-screen");
+      const mainContent = document.getElementById("main-content");
+      async function updatetilesdata() {
+        try {
+          const responses = await Promise.all([
+            fetch(
+              "http://marvel-teaas-lb-1490692637.us-east-1.elb.amazonaws.com:83/total_energy?project_name=Platform-Engineering"
+            ),
+            fetch(
+              "http://marvel-teaas-lb-1490692637.us-east-1.elb.amazonaws.com:83/energy_change?project_name=Platform-Engineering"
+            ),
+            fetch(
+              "http://marvel-teaas-lb-1490692637.us-east-1.elb.amazonaws.com:83/average_energy?project_name=Platform-Engineering"
+            ),
+            fetch(
+              "http://marvel-teaas-lb-1490692637.us-east-1.elb.amazonaws.com:83/instance_count?project_name=Platform-Engineering"
+            ),
+            fetch(
+              "http://marvel-teaas-lb-1490692637.us-east-1.elb.amazonaws.com:83/total_co2?project_name=Platform-Engineering"
+            ),
+            fetch(
+              "http://marvel-teaas-lb-1490692637.us-east-1.elb.amazonaws.com:83/total_co2?project_name=Platform-Engineering"
+            ),
+            fetch(
+              "http://marvel-teaas-lb-1490692637.us-east-1.elb.amazonaws.com:83/s3?project_name=Platform-Engineering"
+            ),
+          ]);
+          const [
+            totalEnergyData,
+            energyChangeData,
+            averageEnergyData,
+            instanceCountData,
+            co2Data,
+            footprintData,
+          ] = await Promise.all(responses.map((response) => response.json()));
+          console.log(
+            "API Responses:",
+            totalEnergyData,
+            energyChangeData,
+            averageEnergyData,
+            instanceCountData,
+            co2Data,
+            footprintData
+          );
+          // Handle total energy data
+          const latestData = totalEnergyData[0];
+          document.getElementById(
+            "total_energy"
+          ).textContent = `${latestData.latestWeekTotalEnergy} KW`;
+          document.getElementById(
+            "energy_change_percentage1"
+          ).textContent = `${latestData.percentageDifference}% from last week`;
+          document.getElementById(
+            "energy_change_percentage2"
+          ).textContent = `${latestData.percentageDifference}% from last week`;
+          // Adjust classes
+          const energyChangePercentage = document.getElementById(
+            "energy_change_percentage1"
+          );
+          const energyChangePercentage1 = document.getElementById(
+            "energy_change_percentage2"
+          );
+          if (latestData.percentageDifference > 0) {
+            energyChangePercentage.classList.add("negative");
+            energyChangePercentage.classList.remove("positive");
+            energyChangePercentage1.classList.add("negative");
+            energyChangePercentage1.classList.remove("positive");
+          } else {
+            energyChangePercentage.classList.add("positive");
+            energyChangePercentage.classList.remove("negative");
+            energyChangePercentage1.classList.add("positive");
+            energyChangePercentage1.classList.remove("negative");
+          }
+
+          // Handle energy change data
+          document.getElementById(
+            "energy_change_from_last_week"
+          ).textContent = `${energyChangeData[0].difference} kW`;
+
+          // Handle average energy data
+          const avgEnergyData = averageEnergyData[0];
+          document.getElementById(
+            "average_energy"
+          ).textContent = `${avgEnergyData.avgEnergyThisWeek} KW`;
+          const avg_energy_per = document.getElementById(
+            "average_energy_change"
+          );
+          avg_energy_per.textContent = `${avgEnergyData.percentageDifference}% from last week`;
+          // Adjust class
+          if (avgEnergyData.percentageDifference > 0) {
+            avg_energy_per.classList.add("negative");
+            avg_energy_per.classList.remove("positive");
+          } else {
+            avg_energy_per.classList.add("positive");
+            avg_energy_per.classList.remove("negative");
+          }
+
+          // Handle instance count data
+          document.getElementById(
+            "number_of_instances"
+          ).textContent = `${instanceCountData[0].uniqueInstanceCount}`;
+
+          // Handle CO2 data
+          const co2Value = co2Data[0].latest_week_co2;
+          const co2PercentageChange = co2Data[0].percentage_difference;
+          document.getElementById(
+            "co2-value"
+          ).textContent = `${co2Value} kg CO₂e`;
+          const changeElement = document.getElementById("change");
+          changeElement.textContent = `${co2PercentageChange}% from last week`;
+          // Adjust class
+          if (co2PercentageChange > 0) {
+            changeElement.classList.add("negative");
+            changeElement.classList.remove("positive");
+          } else {
+            changeElement.classList.add("positive");
+            changeElement.classList.remove("negative");
+          }
+
+          // Handle footprint data
+          const co2Valuediff = footprintData[0].co2_difference;
+          const footprintPercentageChange =
+            footprintData[0].percentage_difference;
+          document.getElementById(
+            "co2_change_percentage"
+          ).textContent = `${co2Valuediff} kg CO₂e`;
+          const footprintChangeElement =
+            document.getElementById("footprint_change");
+          footprintChangeElement.textContent = `${footprintPercentageChange}% from last week`;
+          // Adjust class
+          if (footprintPercentageChange > 0) {
+            footprintChangeElement.classList.add("negative");
+            footprintChangeElement.classList.remove("positive");
+          } else {
+            footprintChangeElement.classList.add("positive");
+            footprintChangeElement.classList.remove("negative");
+          }
+
+          // Hide loading screen and show main content
+          showMainContent();
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+
+      function showMainContent() {
+        // Fade out loading screen
+        loadingScreen.style.opacity = "1";
+        (function fade() {
+          if ((loadingScreen.style.opacity -= 0.1) < 0) {
+            loadingScreen.style.display = "none";
+            // Show main content
+            document.body.style.overflow = "visible";
+            mainContent.style.display = "block";
+            // Ensure we're at the top of the page
+            window.scrollTo(0, 0);
+          } else {
+            requestAnimationFrame(fade);
+          }
+        })();
+      }
+
+      // Creates the high charts
+      function createChart() {
+        const fetchURL = "http://marvel-teaas-lb-1490692637.us-east-1.elb.amazonaws.com:83/graph2";
+        fetch(fetchURL)
+          .then((response) => response.json())
+          .then((data) => {
+            // Sort the data by date
+            data.sort(
+              (a, b) => new Date(a.startTime) - new Date(b.startTime)
+            );
+            // Process the data to format it for the chart
+            const formattedData = data.map((item) => ({
+              x: new Date(item.startTime).getTime(),
+              y: item.totalEnergy,
+            }));
+            Highcharts.chart("container", {
+              chart: {
+                type: "areaspline",
+              },
+              title: {
+                text: "Total Energy (Weekly Trend)",
+              },
+              xAxis: {
+                type: "datetime",
+                title: {
+                  text: "Week",
+                },
+              },
+              yAxis: {
+                title: {
+                  text: "Total Energy (KWh)",
+                },
+                max: Math.ceil(Math.max(...data.map((item) => item.totalEnergy)) / 10) * 10,
+              },
+              tooltip: {
+                formatter: function () {
+                  return (
+                    Highcharts.dateFormat("%Y-%m-%d", this.x) +
+                    "<br/>" +
+                    "Total Energy: " +
+                    this.y.toFixed(2)
+                  );
+                },
+              },
+              plotOptions: {
+                areaspline: {
+                  fillOpacity: 0.5,
+                  color: "#32CD32",
+                  fillColor: {
+                    linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
+                    stops: [
+                      [0, "#32CD32"],
+                      [1, "#32CD3200"],
+                    ],
+                  },
+                  marker: {
+                    enabled: true,
+                    radius: 4,
+                    lineWidth: 1,
+                    lineColor: "#ffffff",
+                  },
+                },
+              },
+              series: [
+                {
+                  name: "Total Energy",
+                  data: formattedData,
+                },
+              ],
+              legend: {
+                enabled: false,
+              },
+            });
+          })
+          .catch((error) => console.error("Error fetching data:", error));
+      }
+
+      // Create table row for high energy utilization instances
+      function createTableRow(instanceData, tableBody) {
+        const row = document.createElement("tr");
+
+        // Instance Name
+        const instanceNameCell = document.createElement("td");
+        instanceNameCell.textContent = instanceData.instanceName || "N/A";
+        row.appendChild(instanceNameCell);
+
+        // Instance ID
+        const instanceIdCell = document.createElement("td");
+        instanceIdCell.textContent = instanceData.instanceId || "N/A";
+        row.appendChild(instanceIdCell);
+
+        // Instance State
+        const instanceStateCell = document.createElement("td");
+        instanceStateCell.textContent = instanceData.instanceState || "N/A";
+        row.appendChild(instanceStateCell);
+
+        // Instance Type
+        const instanceTypeCell = document.createElement("td");
+        instanceTypeCell.textContent = instanceData.instanceType || "N/A";
+        row.appendChild(instanceTypeCell);
+
+        // CPU Utilization
+        const cpuUtilizationCell = document.createElement("td");
+        cpuUtilizationCell.textContent = instanceData.cpuUtilization?.toFixed(2) || "N/A";
+        row.appendChild(cpuUtilizationCell);
+
+        // Uptime
+        const uptimeCell = document.createElement("td");
+        uptimeCell.textContent = instanceData.uptime?.toFixed(2) || "N/A";
+        row.appendChild(uptimeCell);
+
+        // Energy Used
+        const energyCell = document.createElement("td");
+        energyCell.textContent = instanceData.energy?.toFixed(2) || "N/A";
+        row.appendChild(energyCell);
+
+        tableBody.appendChild(row);
+      }
+
+      // Create table row for S3 bucket data
+      function createTableRowS3(instanceData, tableBody) {
+        const row = document.createElement("tr");
+
+        // Bucket Name
+        const bucketNameCell = document.createElement("td");
+        bucketNameCell.textContent = instanceData.bucketname || "N/A";
+        bucketNameCell.classList.add('bucketname');
+        row.appendChild(bucketNameCell);
+
+        // Deletion Policy
+        const deletionPolicyCell = document.createElement("td");
+        deletionPolicyCell.textContent = instanceData.deletion || "N/A";
+        row.appendChild(deletionPolicyCell);
+
+        // Archival Policy
+        const archivalPolicyCell = document.createElement("td");
+        archivalPolicyCell.textContent = instanceData.lifecycle || "N/A";
+        row.appendChild(archivalPolicyCell);
+
+        // Owner
+        const ownerCell = document.createElement("td");
+        ownerCell.textContent = instanceData.owner || "N/A";
+        row.appendChild(ownerCell);
+
+        tableBody.appendChild(row);
+      }
+
+      // Fetch and display data for high energy utilization instances
+      async function fetchDataAndDisplayTable() {
+        try {
+          const response = await fetch(
+            "http://marvel-teaas-lb-1490692637.us-east-1.elb.amazonaws.com:83/high_energy_used"
+          );
+          if (!response.ok) {
+            throw new Error(
+              `Network response was not ok: ${response.statusText}`
+            );
+          }
+          const data = await response.json();
+          console.log("Data received from API:", data);
+
+          const tableBody = document.getElementById("unusedInstancesTableBody");
+          tableBody.innerHTML = "";
+
+          if (Array.isArray(data) && data.length > 0) {
+            data.forEach((instanceData) => {
+              createTableRow(instanceData, tableBody);
+            });
+          } else {
+            console.warn("No data available to display.");
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+
+      // Fetch and display data for S3 buckets
+      async function fetchDataAndDisplayTableS3() {
+        try {
+          const response = await fetch(
+            "http://marvel-teaas-lb-1490692637.us-east-1.elb.amazonaws.com:83/s3?project_name=Platform-Engineering"
+          );
+          if (!response.ok) {
+            throw new Error(
+              `Network response was not ok: ${response.statusText}`
+            );
+          }
+          const data = await response.json();
+          console.log("Data received from API:", data);
+
+          const tableBody = document.getElementById("s3tableBody");
+          tableBody.innerHTML = "";
+
+          if (Array.isArray(data) && data.length > 0) {
+            data.forEach((instanceData) => {
+              createTableRowS3(instanceData, tableBody);
+            });
+          } else {
+            console.warn("No data available to display.");
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+
+      // Call the functions to update the tiles and tables when the page loads
+      updatetilesdata();
+      createChart();
+      fetchDataAndDisplayTable();
+      fetchDataAndDisplayTableS3();
+    });
+    function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+
+</html>
